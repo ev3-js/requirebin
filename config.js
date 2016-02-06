@@ -2,13 +2,13 @@
 
 var envs = {
   production: {
-    GITHUB_CLIENT: 'f7b1530b019cbb2619d5',
-    GATEKEEPER: 'http://gatekeeper.maxogden.com',
+    GITHUB_CLIENT: '6854b77cb4d0e137ee58',
+    GATEKEEPER: 'https://cycle-shell-gatekeeper.herokuapp.com/',
     BROWSERIFYCDN: 'https://wzrd.in'
   },
   dev: {
-    GITHUB_CLIENT: '77ca0223691ae7245419', // redirect goes to localhost:5000
-    GATEKEEPER: 'http://localhost:9999',
+    GITHUB_CLIENT: '6854b77cb4d0e137ee58', // redirect goes to localhost:5000
+    GATEKEEPER: 'https://cycle-shell-gatekeeper.herokuapp.com/',
     BROWSERIFYCDN: 'https://wzrd.in'
   }
 }

@@ -8,4 +8,4 @@ app.get('*', function (req, res) {
   res.sendFile(__dirname + req.path)
 })
 
-app.listen(process.env.PORT)
+app.listen(process.env.PORT || 3000)

@@ -1453,7 +1453,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":10,"once":12,"parse-headers":11}],10:[function(require,module,exports){
+},{"global/window":10,"once":11,"parse-headers":12}],10:[function(require,module,exports){
 var global=self;if (typeof window !== "undefined") {
     module.exports = window;
 } else if (typeof global !== "undefined") {
@@ -1464,7 +1464,7 @@ var global=self;if (typeof window !== "undefined") {
     module.exports = {};
 }
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -1811,7 +1811,7 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -1843,7 +1843,7 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":14,"trim":15}],15:[function(require,module,exports){
+},{"for-each":15,"trim":14}],14:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -1859,7 +1859,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach

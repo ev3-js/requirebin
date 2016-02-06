@@ -1,11 +1,12 @@
 var app = require('express')()
+var path = require('path')
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html')
 })
 
 app.get('*', function (req, res) {
-  res.sendFile(__dirname + req.path)
+  res.sendFile(path.join(__dirname + req.path))
 })
 
 app.listen(process.env.PORT || 3000)

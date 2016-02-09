@@ -145,12 +145,20 @@ body > pre { display: none }
   top: 5px;
 }
 
+.ace_info {
+  background-image: none;
+}
+
 
 .require-bin-editor .CodeMirror .errorLine { background: rgba(255,0,0,0.25); }
 
 #play { overflow: hidden }
 #shareTextarea { font-size: 12px; }
 #shareInstructions p { margin: 5px 0; }
+
+#edit-bundle {
+  position: absolute
+}
 
 #howto, #share, .packagejson { padding: 20px; position: absolute; right: 0; background: white; width: 40%; overflow: auto; border-left: 1px solid #eee; border-bottom: 1px solid #eee; }
 .packagejson { clear: both; }

@@ -169,6 +169,7 @@ function initialize () {
 
     var packageTags = $('.tagsinput')
     editors.get('bundle').on('valid', function (valid) {
+      console.log(valid)
       if (!valid) return
       ui.$runButton.removeClass('hidden')
       $('.editor-picker').removeClass('hidden')
@@ -261,7 +262,7 @@ function initialize () {
         // only execute play if any editor is dirty
         var isDirty = editors.asArray()
           .filter(function (editor) {
-            return !editor.editor.isClean()
+            return editor.editor && !editor.editor.isClean()
           })
           .length > 0
         if (!isDirty) {
@@ -324,7 +325,7 @@ function initialize () {
       // enable localStorage save when the user is working on a new gist
       editors.all(function (editor) {
         editor.on('change', function () {
-          var code = editor.editor.getValue()
+          var code = editor.getValue()
           window.localStorage.setItem(editor.name + 'Code', code)
         })
       })

@@ -13,7 +13,7 @@
   </head>
   <body>
     <a href="/"><img class="logo" src="img/logo-black.png"></a>
-    
+
     <p class="tagline">Shareable JavaScript programs powered by <a href="http://npmjs.org" target="_blank"><span class="npm"></span></a> and <a href="http://browserify.org" target="_blank"><span class="browserify"></span></a></p>
 
     <select class="actionsMenu" value="Actions" tabindex="1">
@@ -65,14 +65,14 @@
       </div>
       <div id="howto" class="hidden">
         <p>Node.js style modular code gets transformed into code that can run client-side using <a href="http://browserify.org/" target="_blank">browserify</a> via <a target="_blank" href="http://wzrd.in.nyud.net/" target="_blank">browserify-cdn</a>.</p>
-                
+
         <p>Want to see an example? <a target="_blank" href="/?gist=juliangruber/6264704">requirebin.com/?gist=juliangruber/6264704</a></p>
         <p>They are also embeddable <a target="_blank" href="/embed?gist=juliangruber/6264704">requirebin.com/embed?gist=juliangruber/6264704</a></p>
         <p>Here are <a href="https://gist.github.com/maxogden/9425694">a bunch more examples to play with</a>.</p>
         <p>Need HTML or CSS? Check out <a target="_blank" href="http://requirebin.com/?gist=maxogden/9842648">insert-css and domify</a>.</p>
         <p>The <span class="view-icon"></span> buttons run the code from the current bin.</p>
         <div class="col-xs-3"><a class="run-btn btn btn-block btn-lg btn-primary"><i class="fui-eye-16"></i> Run Code</a></div>
-        
+
         <div class="attribution">
           <p>View the source or report bugs <a href="https://github.com/maxogden/requirebin" target="_blank">on Github</a>.</p>
           <p><strong>Need Help?</strong> Send a question via tweet to <a href="http://twitter.com/maxogden" target="_blank">@maxogden</a></p>
@@ -87,7 +87,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -95,12 +95,13 @@
       <div class="rect4"></div>
       <div class="rect5"></div>
     </div>
-    
+
     <!-- editors -->
     <div id="edit-meta" class="require-bin-editor left hidden"></div>
     <div id="edit-head" class="require-bin-editor left hidden"></div>
     <div id="edit-body" class="require-bin-editor left hidden"></div>
     <div id="edit-bundle" class="require-bin-editor left"></div>
+    <div id="console" class="require-bin-editor right"></div>
 
 <script id="bundle-template" type="text/template">// require() some stuff from npm (like you were using browserify)
 // and then hit Run Code to run it on the right

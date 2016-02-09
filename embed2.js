@@ -86,7 +86,8 @@ function render (content) {
     container: document.getElementById('result'),
     head: content.head,
     body: content.body + '<script type="text/javascript">' +
-    'setTimeout(function(){\n;' + content.bundle + '\n;}, 0)</script>'
+    'setTimeout(function(){\n;' + content.bundle + '\n;}, 0)</script>',
+    sandboxAttributes: ['allow-scripts', 'allow-same-origin']
   })
 }
 

@@ -3,7 +3,7 @@ var $ = window.$
 
 var config = require('./config')
 var elementClass = require('element-class')
-var createSandbox = require('browser-module-sandbox')
+var createSandbox = require('./sandbox')
 var url = require('url')
 var request = require('browser-request')
 var detective = require('detective')
@@ -42,6 +42,11 @@ function initialize () {
     gistID = gistTokens.id
     ui.enableShare(gistID)
   }
+
+  window.addEventListener('message', function (msg) {
+    console.log(msg)
+    document.getElementById('console').innerHTML += msg.data
+  })
 
   // special parameter `code` is used to perform the auth + redirection
   // so no need to load the code
@@ -169,7 +174,6 @@ function initialize () {
 
     var packageTags = $('.tagsinput')
     editors.get('bundle').on('valid', function (valid) {
-      console.log(valid)
       if (!valid) return
       ui.$runButton.removeClass('hidden')
       $('.editor-picker').removeClass('hidden')

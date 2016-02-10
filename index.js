@@ -7,7 +7,7 @@ var createSandbox = require('./sandbox')
 var url = require('url')
 var request = require('browser-request')
 var detective = require('detective')
-var keydown = require('keydown')
+var keydown = require('keydown-with-event')
 
 var uglify = require('uglify-js')
 var cookie = require('./lib/cookie')
@@ -303,6 +303,16 @@ function initialize () {
         doBundle()
       },
 
+      load: function () {
+        $('#load-dialog').modal()
+        // if (loggedIn) return Gist.getList()
+        // var loginURL = 'https://github.com/login/oauth/authorize' +
+        //   '?client_id=' + config.GITHUB_CLIENT +
+        //   '&scope=gist' +
+        //   '&redirect_uri=' + currentHost
+        // window.location.href = loginURL
+      },
+
       save: function () {
         if (loggedIn) return saveGist(gistID)
         ui.$spinner.removeClass('hidden')
@@ -343,13 +353,13 @@ function initialize () {
 
     keydown(['<meta>', '<enter>']).on('pressed', actions.play)
     keydown(['<control>', '<enter>']).on('pressed', actions.play)
-    keydown(['<meta>', 'S']).on('pressed', function (e) {
+    keydown(['<meta>', 'S']).on('pressed', function (pressed, e) {
       e.preventDefault()
-      actions.play
+      actions.play()
     })
-    keydown(['<control>', 'S']).on('pressed', function (e) {
+    keydown(['<control>', 'S']).on('pressed', function (pressed, e) {
       e.preventDefault()
-      actions.play
+      actions.play()
     })
 
     // UI actions when there's no Gist

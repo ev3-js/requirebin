@@ -50,7 +50,7 @@
     "javascript-editor-esprima": "^1.0.1",
     "jshint": "^2.9.1",
     "jsonp": "0.0.3",
-    "keydown": "~0.0.3",
+    "keydown-with-event": "^0.1.2",
     "nets": "^1.0.0"
   },
   "engines": {

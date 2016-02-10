@@ -252,6 +252,9 @@ h6 {
   .btn.disabled, .btn[disabled] {
     background-color: #95a5a6;
     color: white; }
+    .btn.btn-primary.disabled:hover {
+      background-color: #aaa;
+    }
   .btn.btn-large {
     padding-bottom: 12px;
     padding-top: 13px; }

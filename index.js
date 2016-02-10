@@ -343,6 +343,14 @@ function initialize () {
 
     keydown(['<meta>', '<enter>']).on('pressed', actions.play)
     keydown(['<control>', '<enter>']).on('pressed', actions.play)
+    keydown(['<meta>', 'S']).on('pressed', function (e) {
+      e.preventDefault()
+      actions.play
+    })
+    keydown(['<control>', 'S']).on('pressed', function (e) {
+      e.preventDefault()
+      actions.play
+    })
 
     // UI actions when there's no Gist
     if (!gistID) {

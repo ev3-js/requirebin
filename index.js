@@ -27,7 +27,14 @@ function initialize () {
     token: cookie.get('oauth-token'),
     auth: 'oauth'
   })
-  var packagejson = {'name': 'requirebin-sketch', 'version': '1.0.0'}
+  var packagejson = {
+    'name': 'requirebin-sketch',
+    'version': '1.0.0',
+    'dependencies': {
+      'cycle-shell': '0.3.5',
+      'iframe-console': '0.1.5'
+    }
+  }
   var parsedURL = url.parse(window.location.href, true)
   var gistTokens = Gist.fromUrl(parsedURL)
   window.packagejson = packagejson
@@ -57,9 +64,10 @@ function initialize () {
   if (parsedURL.port) currentHost += ':' + parsedURL.port
 
   function doBundle () {
+    var addRequires = 'require("cycle-shell")(main)\nrequire("iframe-console")()\n\n'
     sandbox.iframeHead = editors.get('head').getValue()
     sandbox.iframeBody = editors.get('body').getValue()
-    sandbox.bundle(editors.get('bundle').getValue(), packagejson.dependencies)
+    sandbox.bundle(addRequires + editors.get('bundle').getValue(), packagejson.dependencies)
   }
 
   // todo: move to auth.js

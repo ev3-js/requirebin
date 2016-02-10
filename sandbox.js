@@ -4,6 +4,7 @@ var events = require('events')
 var request = require('browser-request')
 var detective = require('detective')
 var createCache = require('browser-module-cache')
+var log = require('iframe-console')
 
 module.exports = function (opts) {
   return new Sandbox(opts)
@@ -130,7 +131,7 @@ Sandbox.prototype.bundle = function(entry, preferredVersions) {
     })
   }
 
-  function makeIframe(script) {
+  function makeIframe (script) {
     script = (script || '')
     self.emit('bundleContent', script)
 

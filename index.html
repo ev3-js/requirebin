@@ -101,7 +101,13 @@
     <div id="edit-head" class="require-bin-editor left hidden"></div>
     <div id="edit-body" class="require-bin-editor left hidden"></div>
     <div id="edit-bundle" class="require-bin-editor left"></div>
-    <div id="console" class="hidden left"></div>
+    <div id="console-container" class="left">
+      <div id="console-toolbar">
+        <h4 id="console-header">Log</h4>
+        <button id="console-button" class="btn btn-block btn-lg btn-primary">Clear</button>
+      </div>
+      <div id="console"></div>
+    </div>
 
 <script id="bundle-template" type="text/template">// require() some stuff from npm (like you were using browserify)
 // and then hit Run Code to run it on the right

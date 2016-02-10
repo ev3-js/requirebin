@@ -89,7 +89,7 @@ function initialize () {
   }
 
   function saveGist (id, opts) {
-    ui.$spinner.show()
+    ui.$spinner.removeClass('hidden')
     var entry = editors.get('bundle').getValue()
     opts = opts || {}
     opts.isPublic = 'isPublic' in opts ? opts.isPublic : true
@@ -126,17 +126,17 @@ function initialize () {
         if (newGist.user && newGist.user.login) {
           newGistId = newGist.user.login + '/' + newGistId
         }
-        ui.$spinner.hide()
+        ui.$spinner.addClass('hidden')
         if (err) ui.tooltipMessage('error', err.toString())
         if (newGistId) window.location.href = '/?gist=' + newGistId
       })
     })
   }
 
-  ui.$spinner.show()
+  ui.$spinner.removeClass('hidden')
   // if gistID is not set, fallback to specific queryParams, local storage
   githubGist.getCode(gistID, function (err, code) {
-    ui.$spinner.hide()
+    ui.$spinner.addClass('hidden')
     if (err) return ui.tooltipMessage('error', JSON.stringify(err))
 
     editors.init(code)
@@ -217,15 +217,15 @@ function initialize () {
     })
 
     sandbox.on('bundleStart', function () {
-      ui.$spinner.show()
+      ui.$spinner.removeClass('hidden')
     })
 
     sandbox.on('bundleEnd', function (bundle) {
-      ui.$spinner.hide()
+      ui.$spinner.addClass('hidden')
     })
 
     sandbox.on('bundleError', function (err) {
-      ui.$spinner.hide()
+      ui.$spinner.addClass('hidden')
       ui.tooltipMessage('error', 'Bundling error: \n\n' + err)
     })
 
@@ -263,8 +263,14 @@ function initialize () {
     })
 
     $('#console-button').click(function (e) {
+      e.stopPropagation()
       e.preventDefault()
       console.clear()
+    })
+
+    $('#console-toolbar').click(function (e) {
+      e.preventDefault()
+      $('#console-container').toggleClass('minimize')
     })
 
     var actions = {
@@ -285,13 +291,13 @@ function initialize () {
         })
 
         ui.$runButton.addClass('disabled')
-        ui.$spinner.hide()
+        ui.$spinner.addClass('hidden')
         doBundle()
       },
 
       save: function () {
         if (loggedIn) return saveGist(gistID)
-        ui.$spinner.show()
+        ui.$spinner.removeClass('hidden')
         var loginURL = 'https://github.com/login/oauth/authorize' +
           '?client_id=' + config.GITHUB_CLIENT +
           '&scope=gist' +
@@ -301,7 +307,7 @@ function initialize () {
 
       'save-private': function () {
         if (loggedIn) return saveGist(gistID, { 'isPublic': false })
-        ui.$spinner.show()
+        ui.$spinner.removeClass('hidden')
 
         var loginURL = 'https://github.com/login/oauth/authorize' +
           '?client_id=' + config.GITHUB_CLIENT +

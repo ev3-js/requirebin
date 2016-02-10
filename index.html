@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
-    <title>RequireBin</title>
+    <title>Cycle Shell</title>
     <meta charset="utf-8">
     <link rel='shortcut icon' href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -12,40 +12,55 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.0.0/magnific-popup.min.css"/>
   </head>
   <body>
-    <a href="/"><img class="logo" src="img/logo-black.png"></a>
+    <div class="toolbar">
+      <h3 class="logo"><img src="img/cycle-shell.png">Cycle Shell</h3>
 
-    <p class="tagline">Shareable JavaScript programs powered by <a href="http://npmjs.org" target="_blank"><span class="npm"></span></a> and <a href="http://browserify.org" target="_blank"><span class="browserify"></span></a></p>
+      <p class="tagline">
+        Shareable JavaScript programs powered by
+        <a href="http://github.com/maxogden/requirebin" target="_blank">
+          <img class="requirebin" src="img/logo-black.png">
+        </a>
+        <div class="spinner">
+          <div class="rect1"></div>
+          <div class="rect2"></div>
+          <div class="rect3"></div>
+          <div class="rect4"></div>
+          <div class="rect5"></div>
+        </div>
+      </p>
 
-    <select class="actionsMenu" value="Actions" tabindex="1">
-      <option value="noop" selected="selected">Actions</option>
-      <option value="save">Save Gist</option>
-      <option value="save-private">Save Private Gist</option>
-      <option value="show-forks">Show Forks</option>
-      <option value="howto">See instructions</option>
-      <option value="share">Share/Embed</option>
-    </select>
+  		<!--file selector-->
+  		<div class="editor-picker btn-group">
+  			<a class="btn btn-lg btn-primary" data-editor="bundle">
+  				code
+  			</a>
+  			<a class="btn btn-lg" data-editor="head">
+  				&lt;head&gt;
+  			</a>
+  			<a class="btn btn-lg" data-editor="body">
+  				&lt;body&gt;
+  			</a>
+  			<a class="btn btn-lg" data-editor="meta">
+  				package.json
+  			</a>
+  		</div>
 
-    <div class="actionsButtons">
-      <a title="COMMAND+ENTER or CTRL+ENTER" data-action="play" class="play-button btn btn-block btn-lg btn-primary">
-          <i class="fui-eye-16"></i>Run Code
-      </a>
+      <div class="actionsButtons">
+        <a title="COMMAND+ENTER or CTRL+ENTER" data-action="play" class="play-button btn btn-block btn-lg btn-primary">
+            <i class="fui-eye-16"></i>Run Code
+        </a>
+      </div>
+
+      <select class="actionsMenu" value="Actions" tabindex="1">
+        <option value="noop" selected="selected">Actions</option>
+        <option value="save">Save Gist</option>
+        <option value="save-private">Save Private Gist</option>
+        <option value="show-forks">Show Forks</option>
+        <option value="howto">See instructions</option>
+        <option value="share">Share/Embed</option>
+      </select>
+
     </div>
-
-		<!--file selector-->
-		<div class="editor-picker btn-group">
-			<a class="btn btn-lg btn-primary" data-editor="bundle">
-				code
-			</a>
-			<a class="btn btn-lg" data-editor="head">
-				&lt;head&gt;
-			</a>
-			<a class="btn btn-lg" data-editor="body">
-				&lt;body&gt;
-			</a>
-			<a class="btn btn-lg" data-editor="meta">
-				package.json
-			</a>
-		</div>
 
     <div id="play" class="right">
       <div id="share" class="hidden">
@@ -88,20 +103,12 @@
       </div>
     </div>
 
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
-
     <!-- editors -->
     <div id="edit-meta" class="require-bin-editor left hidden"></div>
     <div id="edit-head" class="require-bin-editor left hidden"></div>
     <div id="edit-body" class="require-bin-editor left hidden"></div>
     <div id="edit-bundle" class="require-bin-editor left"></div>
-    <div id="console-container" class="left">
+    <div id="console-container">
       <div id="console-toolbar">
         <h4 id="console-header">Log</h4>
         <button id="console-button" class="btn btn-block btn-lg btn-primary">Clear</button>

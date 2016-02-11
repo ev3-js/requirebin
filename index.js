@@ -107,7 +107,7 @@ function initialize () {
       var minified = uglify.minify(bundle.script, {fromString: true, mangle: false, compress: false})
 
       var gist = {
-        'description': editors.get('meta').getValue().description,
+        'description': JSON.parse(editors.get('meta').getValue()).description,
         'public': opts.isPublic,
         'files': {
           'index.js': {

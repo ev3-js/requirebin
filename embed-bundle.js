@@ -1600,6 +1600,17 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
+},{}],11:[function(require,module,exports){
+var global=self;if (typeof window !== "undefined") {
+    module.exports = window;
+} else if (typeof global !== "undefined") {
+    module.exports = global;
+} else if (typeof self !== "undefined"){
+    module.exports = self;
+} else {
+    module.exports = {};
+}
+
 },{}],9:[function(require,module,exports){
 var window = require("global/window")
 var once = require("once")
@@ -1779,18 +1790,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":11,"once":12,"parse-headers":13}],11:[function(require,module,exports){
-var global=self;if (typeof window !== "undefined") {
-    module.exports = window;
-} else if (typeof global !== "undefined") {
-    module.exports = global;
-} else if (typeof self !== "undefined"){
-    module.exports = self;
-} else {
-    module.exports = {};
-}
-
-},{}],12:[function(require,module,exports){
+},{"global/window":11,"once":12,"parse-headers":13}],12:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -1843,7 +1843,7 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":15,"trim":14}],14:[function(require,module,exports){
+},{"for-each":14,"trim":15}],15:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -1859,7 +1859,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach

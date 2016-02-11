@@ -14,14 +14,14 @@ var cookie = require('./lib/cookie')
 var Gist = require('./lib/github-gist.js')
 var ui = require('./lib/ui-controller')
 var editors = window.editors = require('./lib/editors')
-var Console = require('./lib/console')
+var WindowConsole = require('./lib/console')
 
 initialize()
 
 function initialize () {
   var sandbox
   var gistID
-  var console = new Console()
+  var Console = new WindowConsole()
 
   var githubGist = new Gist({
     token: cookie.get('oauth-token'),
@@ -53,7 +53,7 @@ function initialize () {
   }
 
   window.addEventListener('message', function (msg) {
-    console.addMessage(msg)
+    Console.addMessage(msg)
   })
 
   // special parameter `code` is used to perform the auth + redirection
@@ -273,7 +273,7 @@ function initialize () {
     $('#console-button').click(function (e) {
       e.stopPropagation()
       e.preventDefault()
-      console.clear()
+      Console.clear()
     })
 
     $('#console-toolbar').click(function (e) {

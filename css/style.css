@@ -347,3 +347,8 @@ body > pre { display: none }
   display: inline-block;
   margin: 5px 10px
 }
+
+.modal-body-list {
+  max-height: 400px;
+  overflow-y: auto;
+}

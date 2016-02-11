@@ -117,7 +117,7 @@ function changeEditor (hash) {
   $('#' + hash + '-link').addClass('btn-primary')
 }
 
-},{"./get-gist-files":2,"iframe":4,"jsonp":5,"url":3}],4:[function(require,module,exports){
+},{"./get-gist-files":2,"iframe":5,"jsonp":4,"url":3}],5:[function(require,module,exports){
 module.exports = function(opts) {
   return new IFrame(opts)
 }
@@ -1133,7 +1133,7 @@ function decode(str) {
   }
 }
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 
 /**
  * Module dependencies

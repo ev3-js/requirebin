@@ -64,14 +64,20 @@ a { cursor: pointer; cursor: hand; }
   top: 50px;
   left: 0;
   right: 50%;
-  bottom: 0;
+  bottom: 45px;
+}
+.left.log {
+  bottom: 200px;
 }
 .right {
   position: absolute;
   top: 50px;
   left: 50%;
   right: 0;
-  bottom: 0;
+  bottom: 45px;
+}
+.right.log {
+  bottom: 200px;
 }
 .hidden { visibility: hidden; }
 
@@ -175,8 +181,6 @@ body > pre { display: none }
   background-color: #f5f5f5;
   z-index: 999;
   overflow: hidden;
-  border-top: 1px solid rgba(29, 31, 33, 0.8);
-  border-right: 1px solid rgba(29, 31, 33, 0.8);
   transition: height .3s ease-in-out;
 }
 

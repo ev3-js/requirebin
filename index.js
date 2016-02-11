@@ -305,12 +305,12 @@ function initialize () {
 
       load: function () {
         $('#load-dialog').modal()
-        // if (loggedIn) return Gist.getList()
-        // var loginURL = 'https://github.com/login/oauth/authorize' +
-        //   '?client_id=' + config.GITHUB_CLIENT +
-        //   '&scope=gist' +
-        //   '&redirect_uri=' + currentHost
-        // window.location.href = loginURL
+        if (loggedIn) return githubGist.getList()
+        var loginURL = 'https://github.com/login/oauth/authorize' +
+          '?client_id=' + config.GITHUB_CLIENT +
+          '&scope=gist' +
+          '&redirect_uri=' + currentHost
+        window.location.href = loginURL
       },
 
       save: function () {

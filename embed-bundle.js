@@ -1,33 +1,4 @@
 ;(function(e,t,n){function i(n,s){if(!t[n]){if(!e[n]){var o=typeof require=="function"&&require;if(!s&&o)return o(n,!0);if(r)return r(n,!0);throw new Error("Cannot find module '"+n+"'")}var u=t[n]={exports:{}};e[n][0].call(u.exports,function(t){var r=e[n][1][t];return i(r?r:t)},u,u.exports)}return t[n].exports}var r=typeof require=="function"&&require;for(var s=0;s<n.length;s++)i(n[s]);return i})({1:[function(require,module,exports){
-var nets = require('nets')
-
-module.exports = getGistFiles
-
-function getGistFiles (gist, keys, callback) {
-  var files = gist.data.files
-
-  var truncated = keys.filter(function (name) {
-    return files[name] && files[name].truncated
-  })
-
-  if (truncated.length === 0) return callback(null, gist)
-
-  getNext()
-
-  function getNext () {
-    var file = truncated.pop()
-    if (!file) return callback(null, gist)
-    nets({url: files[file].raw_url}, done)
-
-    function done (err, resp, content) {
-      if (err) return callback(err)
-      files[file].content = content
-      setTimeout(getNext)
-    }
-  }
-}
-
-},{"nets":2}],3:[function(require,module,exports){
 var jsonp = require('jsonp')
 var url = require('url')
 var getGistFiles = require('./get-gist-files')
@@ -85,7 +56,36 @@ function render (head, body, bundle) {
   }
 }
 
-},{"./get-gist-files":1,"jsonp":5,"url":4}],4:[function(require,module,exports){
+},{"./get-gist-files":2,"jsonp":4,"url":3}],2:[function(require,module,exports){
+var nets = require('nets')
+
+module.exports = getGistFiles
+
+function getGistFiles (gist, keys, callback) {
+  var files = gist.data.files
+
+  var truncated = keys.filter(function (name) {
+    return files[name] && files[name].truncated
+  })
+
+  if (truncated.length === 0) return callback(null, gist)
+
+  getNext()
+
+  function getNext () {
+    var file = truncated.pop()
+    if (!file) return callback(null, gist)
+    nets({url: files[file].raw_url}, done)
+
+    function done (err, resp, content) {
+      if (err) return callback(err)
+      files[file].content = content
+      setTimeout(getNext)
+    }
+  }
+}
+
+},{"nets":5}],3:[function(require,module,exports){
 var punycode = { encode : function (s) { return s } };
 
 exports.parse = urlParse;
@@ -691,15 +691,7 @@ function parseHost(host) {
   return out;
 }
 
-},{"querystring":6}],2:[function(require,module,exports){
-var req = require('request')
-
-module.exports = Nets
-
-function Nets(uri, opts, cb) {
-  req(uri, opts, cb)
-}
-},{"request":7}],6:[function(require,module,exports){
+},{"querystring":6}],6:[function(require,module,exports){
 
 /**
  * Object#toString() ref for stringify().
@@ -1019,6 +1011,14 @@ function decode(str) {
 }
 
 },{}],5:[function(require,module,exports){
+var req = require('request')
+
+module.exports = Nets
+
+function Nets(uri, opts, cb) {
+  req(uri, opts, cb)
+}
+},{"request":7}],4:[function(require,module,exports){
 
 /**
  * Module dependencies
@@ -1274,18 +1274,7 @@ function localstorage(){
   } catch (e) {}
 }
 
-},{"./debug":9}],10:[function(require,module,exports){
-var global=self;if (typeof window !== "undefined") {
-    module.exports = window;
-} else if (typeof global !== "undefined") {
-    module.exports = global;
-} else if (typeof self !== "undefined"){
-    module.exports = self;
-} else {
-    module.exports = {};
-}
-
-},{}],7:[function(require,module,exports){
+},{"./debug":9}],7:[function(require,module,exports){
 var window = require("global/window")
 var once = require("once")
 var parseHeaders = require('parse-headers')
@@ -1464,7 +1453,18 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":10,"once":12,"parse-headers":11}],12:[function(require,module,exports){
+},{"global/window":10,"once":12,"parse-headers":11}],10:[function(require,module,exports){
+var global=self;if (typeof window !== "undefined") {
+    module.exports = window;
+} else if (typeof global !== "undefined") {
+    module.exports = global;
+} else if (typeof self !== "undefined"){
+    module.exports = self;
+} else {
+    module.exports = {};
+}
+
+},{}],12:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -1484,54 +1484,6 @@ function once (fn) {
     return fn.apply(this, arguments)
   }
 }
-
-},{}],11:[function(require,module,exports){
-var trim = require('trim')
-  , forEach = require('for-each')
-  , isArray = function(arg) {
-      return Object.prototype.toString.call(arg) === '[object Array]';
-    }
-
-module.exports = function (headers) {
-  if (!headers)
-    return {}
-
-  var result = {}
-
-  forEach(
-      trim(headers).split('\n')
-    , function (row) {
-        var index = row.indexOf(':')
-          , key = trim(row.slice(0, index)).toLowerCase()
-          , value = trim(row.slice(index + 1))
-
-        if (typeof(result[key]) === 'undefined') {
-          result[key] = value
-        } else if (isArray(result[key])) {
-          result[key].push(value)
-        } else {
-          result[key] = [ result[key], value ]
-        }
-      }
-  )
-
-  return result
-}
-},{"for-each":14,"trim":13}],13:[function(require,module,exports){
-
-exports = module.exports = trim;
-
-function trim(str){
-  return str.replace(/^\s*|\s*$/g, '');
-}
-
-exports.left = function(str){
-  return str.replace(/^\s*/, '');
-};
-
-exports.right = function(str){
-  return str.replace(/\s*$/, '');
-};
 
 },{}],9:[function(require,module,exports){
 
@@ -1732,7 +1684,7 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":15}],15:[function(require,module,exports){
+},{"ms":13}],13:[function(require,module,exports){
 /**
  * Helpers.
  */
@@ -1859,7 +1811,39 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-},{}],14:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
+var trim = require('trim')
+  , forEach = require('for-each')
+  , isArray = function(arg) {
+      return Object.prototype.toString.call(arg) === '[object Array]';
+    }
+
+module.exports = function (headers) {
+  if (!headers)
+    return {}
+
+  var result = {}
+
+  forEach(
+      trim(headers).split('\n')
+    , function (row) {
+        var index = row.indexOf(':')
+          , key = trim(row.slice(0, index)).toLowerCase()
+          , value = trim(row.slice(index + 1))
+
+        if (typeof(result[key]) === 'undefined') {
+          result[key] = value
+        } else if (isArray(result[key])) {
+          result[key].push(value)
+        } else {
+          result[key] = [ result[key], value ]
+        }
+      }
+  )
+
+  return result
+}
+},{"for-each":14,"trim":15}],14:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -1907,7 +1891,23 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":16}],16:[function(require,module,exports){
+},{"is-function":16}],15:[function(require,module,exports){
+
+exports = module.exports = trim;
+
+function trim(str){
+  return str.replace(/^\s*|\s*$/g, '');
+}
+
+exports.left = function(str){
+  return str.replace(/^\s*/, '');
+};
+
+exports.right = function(str){
+  return str.replace(/\s*$/, '');
+};
+
+},{}],16:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -1924,5 +1924,5 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}]},{},[3])
+},{}]},{},[1])
 ;

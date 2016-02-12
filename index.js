@@ -104,8 +104,9 @@ function initialize () {
 
     doBundle()
     sandbox.on('bundleEnd', function (bundle) {
+      console.log('ok')
       var minified = uglify.minify(bundle.script, {fromString: true, mangle: false, compress: false})
-
+      console.log('minified')
       var gist = {
         'description': JSON.parse(editors.get('meta').getValue()).name,
         'public': opts.isPublic,

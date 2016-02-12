@@ -305,8 +305,10 @@ function initialize () {
       },
 
       load: function () {
-        $('#load-dialog').modal()
-        return githubGist.getList()
+        if (loggedIn) {
+          $('#load-dialog').modal()
+          return githubGist.getList()
+        }
         var loginURL = 'https://github.com/login/oauth/authorize' +
           '?client_id=' + config.GITHUB_CLIENT +
           '&scope=gist' +

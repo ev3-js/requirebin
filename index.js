@@ -105,7 +105,6 @@ function initialize () {
 
     doBundle()
     sandbox.on('bundleEnd', function (bundle) {
-      var minified = uglify.minify(bundle.script, {fromString: true, mangle: false, compress: false})
       var jsonCode = editors.get('meta').getValue()
       var json = jsonCode ? JSON.parse(jsonCode) : window.packagejson
       var gist = {
@@ -114,9 +113,6 @@ function initialize () {
         'files': {
           'index.js': {
             'content': entry
-          },
-          'minified.js': {
-            'content': minified.code
           },
           'requirebin.md': {
             'content': 'made with [cycle.sh](http://cycle.sh)'

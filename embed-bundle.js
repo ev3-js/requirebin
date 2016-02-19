@@ -1104,18 +1104,7 @@ function jsonp(url, opts, fn){
   target.parentNode.insertBefore(script, target);
 };
 
-},{"debug":8}],9:[function(require,module,exports){
-var global=self;if (typeof window !== "undefined") {
-    module.exports = window;
-} else if (typeof global !== "undefined") {
-    module.exports = global;
-} else if (typeof self !== "undefined"){
-    module.exports = self;
-} else {
-    module.exports = {};
-}
-
-},{}],8:[function(require,module,exports){
+},{"debug":8}],8:[function(require,module,exports){
 
 /**
  * This is the web browser implementation of `debug()`.
@@ -1285,7 +1274,18 @@ function localstorage(){
   } catch (e) {}
 }
 
-},{"./debug":10}],7:[function(require,module,exports){
+},{"./debug":9}],10:[function(require,module,exports){
+var global=self;if (typeof window !== "undefined") {
+    module.exports = window;
+} else if (typeof global !== "undefined") {
+    module.exports = global;
+} else if (typeof self !== "undefined"){
+    module.exports = self;
+} else {
+    module.exports = {};
+}
+
+},{}],7:[function(require,module,exports){
 var window = require("global/window")
 var once = require("once")
 var parseHeaders = require('parse-headers')
@@ -1464,7 +1464,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":9,"once":12,"parse-headers":11}],12:[function(require,module,exports){
+},{"global/window":10,"once":12,"parse-headers":11}],12:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -1517,7 +1517,7 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":14,"trim":13}],10:[function(require,module,exports){
+},{"for-each":14,"trim":13}],9:[function(require,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -1716,7 +1716,23 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":15}],15:[function(require,module,exports){
+},{"ms":15}],13:[function(require,module,exports){
+
+exports = module.exports = trim;
+
+function trim(str){
+  return str.replace(/^\s*|\s*$/g, '');
+}
+
+exports.left = function(str){
+  return str.replace(/^\s*/, '');
+};
+
+exports.right = function(str){
+  return str.replace(/\s*$/, '');
+};
+
+},{}],15:[function(require,module,exports){
 /**
  * Helpers.
  */
@@ -1842,22 +1858,6 @@ function plural(ms, n, name) {
   if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
-
-},{}],13:[function(require,module,exports){
-
-exports = module.exports = trim;
-
-function trim(str){
-  return str.replace(/^\s*|\s*$/g, '');
-}
-
-exports.left = function(str){
-  return str.replace(/^\s*/, '');
-};
-
-exports.right = function(str){
-  return str.replace(/\s*$/, '');
-};
 
 },{}],14:[function(require,module,exports){
 var isFunction = require('is-function')

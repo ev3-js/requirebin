@@ -58,7 +58,7 @@ function initialize () {
 
   // special parameter `code` is used to perform the auth + redirection
   // so no need to load the code
-  if (parsedURL.query.code) return authenticate('save')
+  if (parsedURL.query.code) return authenticate()
 
   var currentHost = parsedURL.protocol + '//' + parsedURL.hostname
   if (parsedURL.port) currentHost += ':' + parsedURL.port
@@ -71,7 +71,7 @@ function initialize () {
   }
 
   // todo: move to auth.js
-  function authenticate (next) {
+  function authenticate () {
     if (cookie.get('oauth-token')) {
       return
     }
@@ -86,7 +86,7 @@ function initialize () {
       cookie.set('oauth-token', data.token)
       // Adjust URL
       var regex = new RegExp('\\?code=' + match[1])
-      window.location.href = window.location.href.replace(regex, '').replace('&state=', '') + `?${next}=true`
+      window.location.href = window.location.href.replace(regex, '').replace('&state=', '') + '?save=true'
     })
 
     return true

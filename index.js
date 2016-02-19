@@ -58,7 +58,7 @@ function initialize () {
 
   // special parameter `code` is used to perform the auth + redirection
   // so no need to load the code
-  if (parsedURL.query.code) return authenticate()
+  if (parsedURL.query.code) return authenticate('save')
 
   var currentHost = parsedURL.protocol + '//' + parsedURL.hostname
   if (parsedURL.port) currentHost += ':' + parsedURL.port
@@ -71,7 +71,7 @@ function initialize () {
   }
 
   // todo: move to auth.js
-  function authenticate () {
+  function authenticate (next) {
     if (cookie.get('oauth-token')) {
       return
     }
@@ -86,7 +86,7 @@ function initialize () {
       cookie.set('oauth-token', data.token)
       // Adjust URL
       var regex = new RegExp('\\?code=' + match[1])
-      window.location.href = window.location.href.replace(regex, '').replace('&state=', '') + '?save=true'
+      window.location.href = window.location.href.replace(regex, '').replace('&state=', '') + `?${next}=true`
     })
 
     return true
@@ -104,9 +104,7 @@ function initialize () {
 
     doBundle()
     sandbox.on('bundleEnd', function (bundle) {
-      console.log('ok')
       var minified = uglify.minify(bundle.script, {fromString: true, mangle: false, compress: false})
-      console.log('minified')
       var gist = {
         'description': JSON.parse(editors.get('meta').getValue()).name,
         'public': opts.isPublic,
@@ -312,7 +310,8 @@ function initialize () {
         var loginURL = 'https://github.com/login/oauth/authorize' +
           '?client_id=' + config.GITHUB_CLIENT +
           '&scope=gist' +
-          '&redirect_uri=' + currentHost
+          '&redirect_uri=' + currentHost +
+          '&callback=load'
         window.location.href = loginURL
       },
 
@@ -322,7 +321,8 @@ function initialize () {
         var loginURL = 'https://github.com/login/oauth/authorize' +
           '?client_id=' + config.GITHUB_CLIENT +
           '&scope=gist' +
-          '&redirect_uri=' + currentHost
+          '&redirect_uri=' + currentHost +
+          '&callback=load'
         window.location.href = loginURL
       },
 

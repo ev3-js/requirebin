@@ -1775,39 +1775,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":12,"once":13,"parse-headers":14}],12:[function(require,module,exports){
-var global=self;if (typeof window !== "undefined") {
-    module.exports = window;
-} else if (typeof global !== "undefined") {
-    module.exports = global;
-} else if (typeof self !== "undefined"){
-    module.exports = self;
-} else {
-    module.exports = {};
-}
-
-},{}],13:[function(require,module,exports){
-module.exports = once
-
-once.proto = once(function () {
-  Object.defineProperty(Function.prototype, 'once', {
-    value: function () {
-      return once(this)
-    },
-    configurable: true
-  })
-})
-
-function once (fn) {
-  var called = false
-  return function () {
-    if (called) return
-    called = true
-    return fn.apply(this, arguments)
-  }
-}
-
-},{}],11:[function(require,module,exports){
+},{"global/window":12,"once":13,"parse-headers":14}],11:[function(require,module,exports){
 /**
  * Helpers.
  */
@@ -1932,6 +1900,38 @@ function plural(ms, n, name) {
   if (ms < n) return;
   if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;
   return Math.ceil(ms / n) + ' ' + name + 's';
+}
+
+},{}],12:[function(require,module,exports){
+var global=self;if (typeof window !== "undefined") {
+    module.exports = window;
+} else if (typeof global !== "undefined") {
+    module.exports = global;
+} else if (typeof self !== "undefined"){
+    module.exports = self;
+} else {
+    module.exports = {};
+}
+
+},{}],13:[function(require,module,exports){
+module.exports = once
+
+once.proto = once(function () {
+  Object.defineProperty(Function.prototype, 'once', {
+    value: function () {
+      return once(this)
+    },
+    configurable: true
+  })
+})
+
+function once (fn) {
+  var called = false
+  return function () {
+    if (called) return
+    called = true
+    return fn.apply(this, arguments)
+  }
 }
 
 },{}],14:[function(require,module,exports){

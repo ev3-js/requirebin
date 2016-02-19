@@ -106,7 +106,8 @@ function initialize () {
     doBundle()
     sandbox.on('bundleEnd', function (bundle) {
       var minified = uglify.minify(bundle.script, {fromString: true, mangle: false, compress: false})
-      var json = JSON.parse(editors.get('meta').getValue()) || window.packagejson
+      var jsonCode = editors.get('meta').getValue()
+      var json = jsonCode ? JSON.parse(jsonCode) : window.packagejson
       var gist = {
         'description': json.name,
         'public': opts.isPublic,

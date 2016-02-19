@@ -58,7 +58,7 @@
   		</div>
 
       <div class="actionsButtons">
-        <a title="COMMAND+ENTER or CTRL+ENTER" data-action="play" class="play-button btn btn-block btn-lg btn-primary">
+        <a id="run-btn" title="COMMAND+ENTER or CTRL+ENTER" data-action="play" class="disabled play-button btn btn-block btn-lg btn-primary">
             <i class="fui-eye-16"></i>Run Code
         </a>
       </div>
@@ -129,8 +129,8 @@
       <div id="console"></div>
     </div>
 
-<script id="bundle-template" type="text/template">function main () {
-
+<script id="bundle-template" type="text/template">function main (input) {
+  return input
 }
 </script>
   <script type="text/javascript" src="flatui-deps.js"></script>

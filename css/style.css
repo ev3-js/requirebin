@@ -167,6 +167,23 @@ body > pre { display: none }
 #shareTextarea { font-size: 12px; }
 #shareInstructions p { margin: 5px 0; }
 
+@keyframes expand {
+  0% {background-color: #76D4D6;}
+  50% {background-color: #78AAD6;}
+  100% {background-color: #76D4D6;}
+}
+
+#run-btn {
+  animation: expand;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+#run-btn.disabled {
+  animation: none;
+}
+
 #edit-bundle {
   position: absolute
 }

@@ -1274,7 +1274,18 @@ function localstorage(){
   } catch (e) {}
 }
 
-},{"./debug":9}],9:[function(require,module,exports){
+},{"./debug":9}],10:[function(require,module,exports){
+var global=self;if (typeof window !== "undefined") {
+    module.exports = window;
+} else if (typeof global !== "undefined") {
+    module.exports = global;
+} else if (typeof self !== "undefined"){
+    module.exports = self;
+} else {
+    module.exports = {};
+}
+
+},{}],9:[function(require,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -1473,39 +1484,7 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":10}],11:[function(require,module,exports){
-var global=self;if (typeof window !== "undefined") {
-    module.exports = window;
-} else if (typeof global !== "undefined") {
-    module.exports = global;
-} else if (typeof self !== "undefined"){
-    module.exports = self;
-} else {
-    module.exports = {};
-}
-
-},{}],12:[function(require,module,exports){
-module.exports = once
-
-once.proto = once(function () {
-  Object.defineProperty(Function.prototype, 'once', {
-    value: function () {
-      return once(this)
-    },
-    configurable: true
-  })
-})
-
-function once (fn) {
-  var called = false
-  return function () {
-    if (called) return
-    called = true
-    return fn.apply(this, arguments)
-  }
-}
-
-},{}],8:[function(require,module,exports){
+},{"ms":11}],8:[function(require,module,exports){
 var window = require("global/window")
 var once = require("once")
 var parseHeaders = require('parse-headers')
@@ -1684,7 +1663,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":11,"once":12,"parse-headers":13}],10:[function(require,module,exports){
+},{"global/window":10,"once":13,"parse-headers":12}],11:[function(require,module,exports){
 /**
  * Helpers.
  */
@@ -1811,23 +1790,28 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
+module.exports = once
 
-exports = module.exports = trim;
+once.proto = once(function () {
+  Object.defineProperty(Function.prototype, 'once', {
+    value: function () {
+      return once(this)
+    },
+    configurable: true
+  })
+})
 
-function trim(str){
-  return str.replace(/^\s*|\s*$/g, '');
+function once (fn) {
+  var called = false
+  return function () {
+    if (called) return
+    called = true
+    return fn.apply(this, arguments)
+  }
 }
 
-exports.left = function(str){
-  return str.replace(/^\s*/, '');
-};
-
-exports.right = function(str){
-  return str.replace(/\s*$/, '');
-};
-
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -1859,7 +1843,23 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":15,"trim":14}],15:[function(require,module,exports){
+},{"for-each":14,"trim":15}],15:[function(require,module,exports){
+
+exports = module.exports = trim;
+
+function trim(str){
+  return str.replace(/^\s*|\s*$/g, '');
+}
+
+exports.left = function(str){
+  return str.replace(/^\s*/, '');
+};
+
+exports.right = function(str){
+  return str.replace(/\s*$/, '');
+};
+
+},{}],14:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach

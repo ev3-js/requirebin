@@ -86,7 +86,7 @@ function initialize () {
       cookie.set('oauth-token', data.token)
       // Adjust URL
       var regex = new RegExp('\\?code=' + match[1])
-      window.location.href = window.location.href.replace(regex, '').replace('&state=', '') + '?save=true'
+      window.location.href = window.location.href.replace(regex, '').replace('&state=', '') + '?' + localStorage.getItem('state') + '=true'
     })
 
     return true
@@ -307,6 +307,7 @@ function initialize () {
           $('#load-dialog').modal()
           return githubGist.getList()
         }
+        localStorage.setItem('state', 'load')
         var loginURL = 'https://github.com/login/oauth/authorize' +
           '?client_id=' + config.GITHUB_CLIENT +
           '&scope=gist' +
@@ -318,6 +319,7 @@ function initialize () {
       save: function () {
         if (loggedIn) return saveGist(gistID)
         ui.$spinner.removeClass('hidden')
+        localStorage.setItem('state', 'save')
         var loginURL = 'https://github.com/login/oauth/authorize' +
           '?client_id=' + config.GITHUB_CLIENT +
           '&scope=gist' +
@@ -329,7 +331,7 @@ function initialize () {
       'save-private': function () {
         if (loggedIn) return saveGist(gistID, { 'isPublic': false })
         ui.$spinner.removeClass('hidden')
-
+        localStorage.setItem('state', 'save')
         var loginURL = 'https://github.com/login/oauth/authorize' +
           '?client_id=' + config.GITHUB_CLIENT +
           '&scope=gist' +

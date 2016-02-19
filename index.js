@@ -116,7 +116,7 @@ function initialize () {
             'content': minified.code
           },
           'requirebin.md': {
-            'content': 'made with [requirebin](http://requirebin.com)'
+            'content': 'made with [cycle.sh](http://cycle.sh)'
           },
           'package.json': {
             'content': stringifyPackageJson()
@@ -200,10 +200,6 @@ function initialize () {
       cdn: config.BROWSERIFYCDN,
       container: outputEl,
       iframeStyle: 'body, html { height: 100% width: 100% }'
-    }
-
-    if (parsedURL.query.load) {
-      actions.load()
     }
 
     if (parsedURL.query.save) {
@@ -358,6 +354,10 @@ function initialize () {
       'show-forks': function () {
         gistID && ui.showForks(githubGist.forks, githubGist.parent)
       }
+    }
+
+    if (parsedURL.query.load) {
+      actions.load()
     }
 
     keydown(['<meta>', '<enter>']).on('pressed', actions.play)

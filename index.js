@@ -202,7 +202,7 @@ function initialize () {
     var sandboxOpts = {
       cdn: config.BROWSERIFYCDN,
       container: outputEl,
-      iframeStyle: 'body, html { height: 100% width: 100% }'
+      iframeStyle: 'body, html { height: 100%; width: 100%; }'
     }
 
     if (parsedURL.query.save) {
@@ -301,6 +301,7 @@ function initialize () {
         })
 
         ui.$runButton.addClass('disabled')
+        ui.$preview.removeClass('disabled')
         ui.$spinner.addClass('hidden')
         doBundle()
       },
@@ -317,6 +318,11 @@ function initialize () {
           '&redirect_uri=' + currentHost +
           '&callback=load'
         window.location.href = loginURL
+      },
+
+      preview: function () {
+        var src = $('iframe').attr('src')
+        $('#preview-btn').attr('href', src)
       },
 
       save: function () {

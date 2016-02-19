@@ -67,6 +67,7 @@ function initialize () {
     var addRequires = 'require("cycle-shell")(main)\nrequire("iframe-console")()\n\n'
     sandbox.iframeHead = editors.get('head').getValue()
     sandbox.iframeBody = editors.get('body').getValue()
+    packagejson = packagejson ? window.packagejson : packagejson
     sandbox.bundle(addRequires + editors.get('bundle').getValue(), packagejson.dependencies)
   }
 

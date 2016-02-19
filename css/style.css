@@ -45,7 +45,7 @@ a { cursor: pointer; cursor: hand; }
 .editor-picker {
   border-right: 1px solid #eee;
   float: right;
-  margin: 5px 10px;
+  margin: 5px 0px 5px 10px;
 }
 .editor-picker a {
   float: left;
@@ -167,21 +167,12 @@ body > pre { display: none }
 #shareTextarea { font-size: 12px; }
 #shareInstructions p { margin: 5px 0; }
 
-@keyframes expand {
-  0% {background-color: #76D4D6;}
-  50% {background-color: #78AAD6;}
-  100% {background-color: #76D4D6;}
-}
-
 #run-btn {
-  animation: expand;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
+  background-color: #78AAD6;
 }
 
 #run-btn.disabled {
-  animation: none;
+  background-color: #aaa;
 }
 
 #edit-bundle {

@@ -222,7 +222,7 @@ h6 {
 
 .btn {
   border: none;
-  background: #78AAD6;
+  background: #7BCED2;
   color: white;
   font-size: 16.5px;
   text-decoration: none;
@@ -236,7 +236,7 @@ h6 {
   transition: 0.25s;
   -webkit-backface-visibility: hidden; }
   .btn:hover, .btn:focus {
-    background-color: #8CC2F2;
+    background-color: #81e6e8;
     color: white;
     -webkit-transition: 0.25s;
     -moz-transition: 0.25s;
@@ -259,7 +259,7 @@ h6 {
     padding-bottom: 12px;
     padding-top: 13px; }
   .btn.btn-primary {
-    background-color: #76D4D6; }
+    background-color: #7cdcdd; }
     .btn.btn-primary:hover, .btn.btn-primary:focus {
       background-color: #81e6e8; }
     .btn.btn-primary:active, .btn.btn-primary.active {

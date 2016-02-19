@@ -1966,7 +1966,7 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":16,"trim":15}],15:[function(require,module,exports){
+},{"for-each":15,"trim":16}],16:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -1982,7 +1982,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach

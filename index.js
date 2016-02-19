@@ -202,6 +202,10 @@ function initialize () {
       iframeStyle: 'body, html { height: 100% width: 100% }'
     }
 
+    if (parsedURL.query.load) {
+      actions.load()
+    }
+
     if (parsedURL.query.save) {
       // use memdown here to avoid indexeddb transaction bugs :(
       sandboxOpts.cacheOpts = { inMemory: true }

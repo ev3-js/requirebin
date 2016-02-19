@@ -38,7 +38,7 @@
     "browser-module-sandbox": "^1.4.0",
     "browser-request": "^0.3.3",
     "concat-stream": "1.0.0",
-    "detective": "^3.1.0",
+    "detective": "^4.3.1",
     "element-class": "0.0.2",
     "events": "^1.1.0",
     "express": "^4.13.4",

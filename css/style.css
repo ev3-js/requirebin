@@ -2,10 +2,6 @@
   outline: none;
 }
 
-iframe {
-  box-shadow: 0 0 5px 2px rgba(0,0,0,0.2);
-}
-
 body {
   font: 300 14px "Helvetica Neue", Helvetica, Arial;
 }
@@ -172,7 +168,7 @@ body > pre { display: none }
 
 .require-bin-editor .CodeMirror .errorLine { background: rgba(255,0,0,0.25);}
 
-#play { overflow: hidden; padding: 20px; }
+#play { overflow: hidden; }
 #shareTextarea { font-size: 12px; }
 #shareInstructions p { margin: 5px 0; }
 

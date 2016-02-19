@@ -37,7 +37,7 @@ a { cursor: pointer; cursor: hand; }
 
 .actionsMenu { float: right; margin: 5px 10px; }
 .actionsButtons { margin: 5px 0; float: right; }
-.actionsButtons i { position: relative; top: 1px; }
+.actionsButtons i { position: relative; top: 1px; margin-right: 5px; }
 .actionsButtons .fui-new-16 { margin-right: 7px; }
 .actionsButtons .fui-eye-16 { margin-right: 5px; }
 .actionsButtons a.btn-primary { padding: 9px 14px 10px 14px; }

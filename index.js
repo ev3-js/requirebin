@@ -377,7 +377,6 @@ function initialize () {
     })
 
     // UI actions when there's no Gist
-    if (!gistID) {
       // enable localStorage save when the user is working on a new gist
       editors.all(function (editor) {
         editor.on('change', function () {
@@ -388,7 +387,6 @@ function initialize () {
 
       // hide the forks option in the dropdown
       $('a[data-dk-dropdown-value="show-forks"]').parent('li').hide()
-    }
 
     // loads the current code on load
     setTimeout(function () {

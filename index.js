@@ -86,9 +86,8 @@ function initialize () {
       cookie.set('oauth-token', data.token)
       // Adjust URL
       var regex = new RegExp('\\?code=' + match[1])
-      if (localStorage.getItem('state')) {
-        window.location.href = window.location.href.replace(regex, '').replace('&state=', '') + '?' + localStorage.getItem('state') + '=true'
-      }
+      var ext = localStorage.getItem('state') ? '?' + localStorage.getItem('state') + '=true' : ''
+      window.location.href = window.location.href.replace(regex, '').replace('&state=', '') + ext
     })
 
     return true

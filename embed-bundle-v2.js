@@ -1219,7 +1219,15 @@ function jsonp(url, opts, fn){
   target.parentNode.insertBefore(script, target);
 };
 
-},{"debug":8}],8:[function(require,module,exports){
+},{"debug":8}],7:[function(require,module,exports){
+var req = require('request')
+
+module.exports = Nets
+
+function Nets(uri, opts, cb) {
+  req(uri, opts, cb)
+}
+},{"request":9}],8:[function(require,module,exports){
 
 /**
  * This is the web browser implementation of `debug()`.
@@ -1389,15 +1397,7 @@ function localstorage(){
   } catch (e) {}
 }
 
-},{"./debug":9}],7:[function(require,module,exports){
-var req = require('request')
-
-module.exports = Nets
-
-function Nets(uri, opts, cb) {
-  req(uri, opts, cb)
-}
-},{"request":10}],10:[function(require,module,exports){
+},{"./debug":10}],9:[function(require,module,exports){
 var window = require("global/window")
 var once = require("once")
 var parseHeaders = require('parse-headers')
@@ -1576,7 +1576,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":11,"once":12,"parse-headers":13}],9:[function(require,module,exports){
+},{"global/window":11,"once":13,"parse-headers":12}],10:[function(require,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -1786,7 +1786,7 @@ var global=self;if (typeof window !== "undefined") {
     module.exports = {};
 }
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -1934,7 +1934,7 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {

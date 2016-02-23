@@ -43,7 +43,7 @@ function initialize () {
 
   var loggedIn = false
   if (cookie.get('oauth-token')) {
-    actionsMenu.show()
+    $('#login').hide()
     loggedIn = true
   }
 
@@ -326,6 +326,7 @@ function initialize () {
       logout: function () {
         loggedIn = false
         cookie.unset('oauth-token')
+        window.location.href = 'http://cycle.sh'
       },
 
       login: function () {

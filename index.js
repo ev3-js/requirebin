@@ -2,14 +2,12 @@
 var $ = window.$
 
 var config = require('./config')
-var elementClass = require('element-class')
 var createSandbox = require('./sandbox')
 var url = require('url')
 var request = require('browser-request')
 var detective = require('detective')
 var keydown = require('keydown-with-event')
 
-var uglify = require('uglify-js')
 var cookie = require('./lib/cookie')
 var Gist = require('./lib/github-gist.js')
 var ui = require('./lib/ui-controller')
@@ -41,11 +39,13 @@ function initialize () {
 
   // dom nodes
   var outputEl = document.querySelector('#play')
-  var howTo = document.querySelector('#howto')
-  var share = document.querySelector('#share')
+  var actionsMenu = $('.actionsMenu')
 
   var loggedIn = false
-  if (cookie.get('oauth-token')) loggedIn = true
+  if (cookie.get('oauth-token')) {
+    actionsMenu.show()
+    loggedIn = true
+  }
 
   if (gistTokens) {
     gistID = gistTokens.id
@@ -82,12 +82,13 @@ function initialize () {
     var authURL = config.GATEKEEPER + '/authenticate/' + match[1]
     request({url: authURL, json: true}, function (err, resp, data) {
       if (err) return console.error(err)
-      console.log('auth response', resp, data)
       if (data.token === 'undefined') return console.error('Auth failed to acquire token')
       cookie.set('oauth-token', data.token)
       // Adjust URL
       var regex = new RegExp('\\?code=' + match[1])
-      window.location.href = window.location.href.replace(regex, '').replace('&state=', '') + '?' + localStorage.getItem('state') + '=true'
+      if (localStorage.getItem('state')) {
+        window.location.href = window.location.href.replace(regex, '').replace('&state=', '') + '?' + localStorage.getItem('state') + '=true'
+      }
     })
 
     return true
@@ -239,21 +240,17 @@ function initialize () {
 
     // UI actions
     // TODO: move them to ui-controller.js
-
-    document.querySelector('.hide-howto').addEventListener('click', function () {
-      elementClass(howTo).add('hidden')
-    })
-
-    var actionsMenu = $('.actionsMenu')
-    actionsMenu.dropkick({
-      change: function (value, label) {
-        if (value === 'noop') return
-        if (value in actions) actions[value]()
-        setTimeout(function () {
-          actionsMenu.dropkick('reset')
-        }, 0)
-      }
-    })
+    if (loggedIn) {
+      actionsMenu.dropkick({
+        change: function (value, label) {
+          if (value === 'noop') return
+          if (value in actions) actions[value]()
+          setTimeout(function () {
+            actionsMenu.dropkick('reset')
+          }, 0)
+        }
+      })
+    }
 
     $('.actionsButtons a').click(function () {
       var target = $(this)
@@ -308,12 +305,7 @@ function initialize () {
           return githubGist.getList()
         }
         localStorage.setItem('state', 'load')
-        var loginURL = 'https://github.com/login/oauth/authorize' +
-          '?client_id=' + config.GITHUB_CLIENT +
-          '&scope=gist' +
-          '&redirect_uri=' + currentHost +
-          '&callback=load'
-        window.location.href = loginURL
+        startLogin()
       },
 
       preview: function () {
@@ -325,40 +317,32 @@ function initialize () {
         if (loggedIn) return saveGist(gistID)
         ui.$spinner.removeClass('hidden')
         localStorage.setItem('state', 'save')
-        var loginURL = 'https://github.com/login/oauth/authorize' +
-          '?client_id=' + config.GITHUB_CLIENT +
-          '&scope=gist' +
-          '&redirect_uri=' + currentHost +
-          '&callback=load'
-        window.location.href = loginURL
-      },
-
-      'save-private': function () {
-        if (loggedIn) return saveGist(gistID, { 'isPublic': false })
-        ui.$spinner.removeClass('hidden')
-        localStorage.setItem('state', 'save')
-        var loginURL = 'https://github.com/login/oauth/authorize' +
-          '?client_id=' + config.GITHUB_CLIENT +
-          '&scope=gist' +
-          '&private=true' +
-          '&redirect_uri=' + currentHost
-
-        window.location.href = loginURL
-      },
-
-      howto: function () {
-        elementClass(howTo).remove('hidden')
-        elementClass(share).add('hidden')
-      },
-
-      share: function () {
-        elementClass(howTo).add('hidden')
-        elementClass(share).remove('hidden')
+        startLogin()
       },
 
       'show-forks': function () {
         gistID && ui.showForks(githubGist.forks, githubGist.parent)
+      },
+
+      logout: function () {
+        loggedIn = false
+        cookie.unset('oauth-token')
+      },
+
+      login: function () {
+        localStorage.removeItem('state')
+        startLogin()
       }
+    }
+
+
+    function startLogin () {
+      var loginURL = 'https://github.com/login/oauth/authorize' +
+        '?client_id=' + config.GITHUB_CLIENT +
+        '&scope=gist' +
+        '&redirect_uri=' + currentHost +
+        '&callback=load'
+      window.location.href = loginURL
     }
 
     if (parsedURL.query.load) {
@@ -378,15 +362,12 @@ function initialize () {
 
     // UI actions when there's no Gist
       // enable localStorage save when the user is working on a new gist
-      editors.all(function (editor) {
-        editor.on('change', function () {
-          var code = editor.getValue()
-          window.localStorage.setItem(editor.name + 'Code', code)
-        })
+    editors.all(function (editor) {
+      editor.on('change', function () {
+        var code = editor.getValue()
+        window.localStorage.setItem(editor.name + 'Code', code)
       })
-
-      // hide the forks option in the dropdown
-      $('a[data-dk-dropdown-value="show-forks"]').parent('li').hide()
+    })
 
     // loads the current code on load
     setTimeout(function () {

@@ -176,8 +176,12 @@ body > pre { display: none }
   margin-left: 10px;
 }
 
-#preview .btn {
-  padding: 9px 14px 10px 14px;
+#login {
+  margin: 10px
+}
+
+#preview .btn,#login .btn {
+  padding: 10px 14px;
 }
 
 #run-btn {

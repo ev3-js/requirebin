@@ -61,7 +61,7 @@
         </a>
       </div>
 
-
+<!--
   		<div class="editor-picker btn-group">
   			<a class="btn btn-lg btn-primary" data-editor="bundle">
   				code
@@ -70,59 +70,24 @@
   				package.json
   			</a>
   		</div>
+-->
+      <div id="login" class="actionsButtons">
+        <a id="login-btn" data-action="login" class="btn btn-lg">
+          Login
+        </a>
+      </div>
 
-      <select class="actionsMenu" value="Actions" tabindex="1">
+      <select id="dropdown" class="actionsMenu hide" value="Actions" tabindex="1">
         <option value="noop" selected="selected">Actions</option>
         <option value="load"><button>Load Gist</button></option>
         <option value="save">Save Gist</option>
         <option value="save-private">Save Private Gist</option>
-        <option value="show-forks">Show Forks</option>
-        <option value="howto">See instructions</option>
-        <option value="share">Share/Embed</option>
+        <option id="logout" value="logout">Logout</option>
       </select>
 
     </div>
 
-    <div id="play" class="right">
-      <div id="share" class="hidden">
-        <p id="shareDisabled">You have to save your project before you can embed it.</p>
-        <div id="shareInstructions" class="hidden">
-          <p>HTML Embed code:</p>
-          <textarea id="shareTextarea"></textarea>
-          <p>HTML Embed example:</p>
-          <p><a href="/embed?gist=6264704" target="_blank">requirebin.com/embed?gist=6264704</a></p>
-          <p>Share Badge Markdown code:</p>
-          <textarea id="shareBadgeTextarea"></textarea>
-          <p>Markdown Share Badge image code:</p>
-          <textarea id="markdownShareBadgeTextarea"></textarea>
-          <p>Share Badge example:</p>
-          <a class="requirebin-link" target="_blank"><div class="requirebin-badge"></div></a>
-        </div>
-      </div>
-      <div id="howto" class="hidden">
-        <p>Node.js style modular code gets transformed into code that can run client-side using <a href="http://browserify.org/" target="_blank">browserify</a> via <a target="_blank" href="http://wzrd.in.nyud.net/" target="_blank">browserify-cdn</a>.</p>
-
-        <p>Want to see an example? <a target="_blank" href="/?gist=juliangruber/6264704">requirebin.com/?gist=juliangruber/6264704</a></p>
-        <p>They are also embeddable <a target="_blank" href="/embed?gist=juliangruber/6264704">requirebin.com/embed?gist=juliangruber/6264704</a></p>
-        <p>Here are <a href="https://gist.github.com/maxogden/9425694">a bunch more examples to play with</a>.</p>
-        <p>Need HTML or CSS? Check out <a target="_blank" href="http://requirebin.com/?gist=maxogden/9842648">insert-css and domify</a>.</p>
-        <p>The <span class="view-icon"></span> buttons run the code from the current bin.</p>
-        <div class="col-xs-3"><a class="run-btn btn btn-block btn-lg btn-primary"><i class="fui-eye-16"></i> Run Code</a></div>
-
-        <div class="attribution">
-          <p>View the source or report bugs <a href="https://github.com/maxogden/requirebin" target="_blank">on Github</a>.</p>
-          <p><strong>Need Help?</strong> Send a question via tweet to <a href="http://twitter.com/maxogden" target="_blank">@maxogden</a></p>
-          <p><a href="http://thenounproject.com/noun/recycle-bin/#icon-No12230" target="_blank">Recycle Bin</a> icon designed by <a href="http://thenounproject.com/jjaysonn" target="_blank">jayson lim</a></p>
-          <p><a href="#" class="hide-howto">hide these instructions</a></p>
-        </div>
-      </div>
-      <div class="packagejson hidden">
-        <h6>Modules In Use</h6>
-        <div id="tagsinput" class="tagsinput" />
-          <div class="tagsinput-add">No Modules Required Yet</div>
-        </div>
-      </div>
-    </div>
+    <div id="play" class="right"></div>
 
     <!-- editors -->
     <div id="edit-meta" class="require-bin-editor left hidden"></div>

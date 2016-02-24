@@ -20,6 +20,10 @@ function initialize () {
   var sandbox
   var gistID
   var Console = new WindowConsole()
+  // dom nodes
+  var outputEl = document.querySelector('#play')
+  var actionsMenu = $('.actionsMenu')
+
   setTimeout(function () {
     initSandbox()
   })
@@ -70,10 +74,6 @@ function initialize () {
   var parsedURL = url.parse(window.location.href, true)
   var gistTokens = Gist.fromUrl(parsedURL)
   window.packagejson = packagejson
-
-  // dom nodes
-  var outputEl = document.querySelector('#play')
-  var actionsMenu = $('.actionsMenu')
 
   var loggedIn = false
   if (cookie.get('oauth-token')) {
@@ -168,7 +168,7 @@ function initialize () {
         }
         ui.$spinner.addClass('hidden')
         if (err) ui.tooltipMessage('error', err.toString())
-        if (newGistId) window.location.href = '/?gist=' + newGistId
+        if (newGistId && newGist.id !== id) window.location.href = '/?gist=' + newGistId
       })
     })
   }

@@ -20,6 +20,40 @@ function initialize () {
   var sandbox
   var gistID
   var Console = new WindowConsole()
+  setTimeout(function () {
+    initSandbox()
+  })
+
+  var sandboxOpts = {
+    cdn: config.BROWSERIFYCDN,
+    container: outputEl,
+    iframeStyle: 'body, html { height: 100%; width: 100%; }'
+  }
+
+  function initSandbox () {
+    sandbox = createSandbox(sandboxOpts)
+    sandbox.on('modules', function (modules) {
+      if (!modules) return
+      packagejson.dependencies = {}
+      modules.forEach(function (mod) {
+        if (mod.core) return
+        packagejson.dependencies[mod.name] = mod.version
+      })
+    })
+
+    sandbox.on('bundleStart', function () {
+      ui.$spinner.removeClass('hidden')
+    })
+
+    sandbox.on('bundleEnd', function (bundle) {
+      ui.$spinner.addClass('hidden')
+    })
+
+    sandbox.on('bundleError', function (err) {
+      ui.$spinner.addClass('hidden')
+      ui.tooltipMessage('error', 'Bundling error: \n\n' + err)
+    })
+  }
 
   var githubGist = new Gist({
     token: cookie.get('oauth-token'),
@@ -104,7 +138,7 @@ function initialize () {
     opts.isPublic = 'isPublic' in opts ? opts.isPublic : true
 
     doBundle()
-    sandbox.on('bundleEnd', function (bundle) {
+    sandbox.once('bundleEnd', function (bundle) {
       var jsonCode = editors.get('meta').getValue()
       var json = jsonCode ? JSON.parse(jsonCode) : window.packagejson
       var gist = {
@@ -278,25 +312,6 @@ function initialize () {
       if (modules.length === 0) packageTags.append('<div class="tagsinput-add">No Modules Required Yet</div>')
     })
 
-    var sandboxOpts = {
-      cdn: config.BROWSERIFYCDN,
-      container: outputEl,
-      iframeStyle: 'body, html { height: 100%; width: 100%; }'
-    }
-
-    if (parsedURL.query.save) {
-      // use memdown here to avoid indexeddb transaction bugs :(
-      sandboxOpts.cacheOpts = { inMemory: true }
-      sandbox = createSandbox(sandboxOpts)
-      saveGist(gistID, {
-        'isPublic': !parsedURL.query['private']
-      })
-    } else {
-      sandbox = createSandbox(sandboxOpts)
-    }
-
-    if (parsedURL.query.save) return
-
     // UI actions
     // TODO: move them to ui-controller.js
 
@@ -327,28 +342,6 @@ function initialize () {
     if (parsedURL.query.load) {
       actions.load()
     }
-
-    sandbox.on('modules', function (modules) {
-      if (!modules) return
-      packagejson.dependencies = {}
-      modules.forEach(function (mod) {
-        if (mod.core) return
-        packagejson.dependencies[mod.name] = mod.version
-      })
-    })
-
-    sandbox.on('bundleStart', function () {
-      ui.$spinner.removeClass('hidden')
-    })
-
-    sandbox.on('bundleEnd', function (bundle) {
-      ui.$spinner.addClass('hidden')
-    })
-
-    sandbox.on('bundleError', function (err) {
-      ui.$spinner.addClass('hidden')
-      ui.tooltipMessage('error', 'Bundling error: \n\n' + err)
-    })
 
     keydown(['<meta>', '<enter>']).on('pressed', actions.play)
     keydown(['<control>', '<enter>']).on('pressed', actions.play)

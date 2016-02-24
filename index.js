@@ -129,8 +129,8 @@ function initialize () {
 
       githubGist.save(gist, id, opts, function (err, newGist) {
         var newGistId = newGist.id
-        if (newGist.user && newGist.user.login) {
-          newGistId = newGist.user.login + '/' + newGistId
+        if (newGist.owner && newGist.owner.login) {
+          newGistId = newGist.owner.login + '/' + newGistId
         }
         ui.$spinner.addClass('hidden')
         if (err) ui.tooltipMessage('error', err.toString())

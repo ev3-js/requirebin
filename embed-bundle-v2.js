@@ -1775,7 +1775,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":12,"once":14,"parse-headers":13}],12:[function(require,module,exports){
+},{"global/window":12,"once":13,"parse-headers":14}],12:[function(require,module,exports){
 var global=self;if (typeof window !== "undefined") {
     module.exports = window;
 } else if (typeof global !== "undefined") {
@@ -1786,7 +1786,7 @@ var global=self;if (typeof window !== "undefined") {
     module.exports = {};
 }
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -1934,7 +1934,7 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {

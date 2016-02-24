@@ -141,6 +141,19 @@ function initialize () {
 
   ui.$spinner.removeClass('hidden')
   // if gistID is not set, fallback to specific queryParams, local storage
+
+  if (loggedIn) {
+    actionsMenu.dropkick({
+      change: function (value, label) {
+        if (value === 'noop') return
+        if (value in actions) actions[value]()
+        setTimeout(function () {
+          actionsMenu.dropkick('reset')
+        }, 0)
+      }
+    })
+  }
+  
   githubGist.getCode(gistID, function (err, code) {
     ui.$spinner.addClass('hidden')
     if (err) return ui.tooltipMessage('error', JSON.stringify(err))
@@ -239,17 +252,6 @@ function initialize () {
 
     // UI actions
     // TODO: move them to ui-controller.js
-    if (loggedIn) {
-      actionsMenu.dropkick({
-        change: function (value, label) {
-          if (value === 'noop') return
-          if (value in actions) actions[value]()
-          setTimeout(function () {
-            actionsMenu.dropkick('reset')
-          }, 0)
-        }
-      })
-    }
 
     $('.actionsButtons a').click(function () {
       var target = $(this)

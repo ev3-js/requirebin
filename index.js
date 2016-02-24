@@ -134,7 +134,7 @@ function initialize () {
         }
         ui.$spinner.addClass('hidden')
         if (err) ui.tooltipMessage('error', err.toString())
-        if (newGistId) window.location.href = '/?gist=' + newGistId
+        if (newGistId && newGist.id !== id) window.location.href = '/?gist=' + newGistId
       })
     })
   }

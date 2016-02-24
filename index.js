@@ -127,6 +127,29 @@ function initialize () {
       if (sandbox.iframeHead) gist.files['page-head.html'] = {'content': sandbox.iframeHead}
       if (sandbox.iframeBody) gist.files['page-body.html'] = {'content': sandbox.iframeBody}
 
+      // sandbox actions
+      sandbox.on('modules', function (modules) {
+        if (!modules) return
+        packagejson.dependencies = {}
+        modules.forEach(function (mod) {
+          if (mod.core) return
+          packagejson.dependencies[mod.name] = mod.version
+        })
+      })
+
+      sandbox.on('bundleStart', function () {
+        ui.$spinner.removeClass('hidden')
+      })
+
+      sandbox.on('bundleEnd', function (bundle) {
+        ui.$spinner.addClass('hidden')
+      })
+
+      sandbox.on('bundleError', function (err) {
+        ui.$spinner.addClass('hidden')
+        ui.tooltipMessage('error', 'Bundling error: \n\n' + err)
+      })
+
       githubGist.save(gist, id, opts, function (err, newGist) {
         var newGistId = newGist.id
         if (newGist.owner && newGist.owner.login) {
@@ -223,29 +246,6 @@ function initialize () {
       '&callback=load'
     window.location.href = loginURL
   }
-
-  // sandbox actions
-  sandbox.on('modules', function (modules) {
-    if (!modules) return
-    packagejson.dependencies = {}
-    modules.forEach(function (mod) {
-      if (mod.core) return
-      packagejson.dependencies[mod.name] = mod.version
-    })
-  })
-
-  sandbox.on('bundleStart', function () {
-    ui.$spinner.removeClass('hidden')
-  })
-
-  sandbox.on('bundleEnd', function (bundle) {
-    ui.$spinner.addClass('hidden')
-  })
-
-  sandbox.on('bundleError', function (err) {
-    ui.$spinner.addClass('hidden')
-    ui.tooltipMessage('error', 'Bundling error: \n\n' + err)
-  })
 
   githubGist.getCode(gistID, function (err, code) {
     ui.$spinner.addClass('hidden')

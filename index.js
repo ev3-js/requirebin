@@ -153,7 +153,77 @@ function initialize () {
       }
     })
   }
-  
+
+  var actions = {
+    play: function () {
+      // only execute play if any editor is dirty
+      var isDirty = editors.asArray()
+        .filter(function (editor) {
+          return editor.editor && !editor.editor.isClean()
+        })
+        .length > 0
+      if (!isDirty) {
+        return
+      }
+
+      // mark all the editors as clean
+      editors.all(function (editor) {
+        editor.editor.markClean()
+      })
+
+      ui.$runButton.addClass('disabled')
+      ui.$preview.removeClass('disabled')
+      ui.$spinner.addClass('hidden')
+      doBundle()
+    },
+
+    load: function () {
+      if (loggedIn) {
+        $('#load-dialog').modal()
+        return githubGist.getList()
+      }
+      localStorage.setItem('state', 'load')
+      startLogin()
+    },
+
+    preview: function () {
+      var src = $('iframe').attr('src')
+      $('#preview-btn').attr('href', src)
+    },
+
+    save: function () {
+      if (loggedIn) return saveGist(gistID)
+      ui.$spinner.removeClass('hidden')
+      localStorage.setItem('state', 'save')
+      startLogin()
+    },
+
+    'show-forks': function () {
+      gistID && ui.showForks(githubGist.forks, githubGist.parent)
+    },
+
+    logout: function () {
+      loggedIn = false
+      cookie.unset('oauth-token')
+      window.location.href = 'http://cycle.sh'
+    },
+
+    login: function () {
+      localStorage.removeItem('state')
+      startLogin()
+    }
+  }
+
+
+  function startLogin () {
+    var loginURL = 'https://github.com/login/oauth/authorize' +
+      '?client_id=' + config.GITHUB_CLIENT +
+      '&scope=gist' +
+      '&redirect_uri=' + currentHost +
+      '&callback=load'
+    window.location.href = loginURL
+  }
+
   githubGist.getCode(gistID, function (err, code) {
     ui.$spinner.addClass('hidden')
     if (err) return ui.tooltipMessage('error', JSON.stringify(err))
@@ -276,76 +346,6 @@ function initialize () {
       e.preventDefault()
       $('#console-container').toggleClass('minimize')
     })
-
-    var actions = {
-      play: function () {
-        // only execute play if any editor is dirty
-        var isDirty = editors.asArray()
-          .filter(function (editor) {
-            return editor.editor && !editor.editor.isClean()
-          })
-          .length > 0
-        if (!isDirty) {
-          return
-        }
-
-        // mark all the editors as clean
-        editors.all(function (editor) {
-          editor.editor.markClean()
-        })
-
-        ui.$runButton.addClass('disabled')
-        ui.$preview.removeClass('disabled')
-        ui.$spinner.addClass('hidden')
-        doBundle()
-      },
-
-      load: function () {
-        if (loggedIn) {
-          $('#load-dialog').modal()
-          return githubGist.getList()
-        }
-        localStorage.setItem('state', 'load')
-        startLogin()
-      },
-
-      preview: function () {
-        var src = $('iframe').attr('src')
-        $('#preview-btn').attr('href', src)
-      },
-
-      save: function () {
-        if (loggedIn) return saveGist(gistID)
-        ui.$spinner.removeClass('hidden')
-        localStorage.setItem('state', 'save')
-        startLogin()
-      },
-
-      'show-forks': function () {
-        gistID && ui.showForks(githubGist.forks, githubGist.parent)
-      },
-
-      logout: function () {
-        loggedIn = false
-        cookie.unset('oauth-token')
-        window.location.href = 'http://cycle.sh'
-      },
-
-      login: function () {
-        localStorage.removeItem('state')
-        startLogin()
-      }
-    }
-
-
-    function startLogin () {
-      var loginURL = 'https://github.com/login/oauth/authorize' +
-        '?client_id=' + config.GITHUB_CLIENT +
-        '&scope=gist' +
-        '&redirect_uri=' + currentHost +
-        '&callback=load'
-      window.location.href = loginURL
-    }
 
     if (parsedURL.query.load) {
       actions.load()

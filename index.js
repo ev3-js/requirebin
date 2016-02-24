@@ -224,6 +224,29 @@ function initialize () {
     window.location.href = loginURL
   }
 
+  // sandbox actions
+  sandbox.on('modules', function (modules) {
+    if (!modules) return
+    packagejson.dependencies = {}
+    modules.forEach(function (mod) {
+      if (mod.core) return
+      packagejson.dependencies[mod.name] = mod.version
+    })
+  })
+
+  sandbox.on('bundleStart', function () {
+    ui.$spinner.removeClass('hidden')
+  })
+
+  sandbox.on('bundleEnd', function (bundle) {
+    ui.$spinner.addClass('hidden')
+  })
+
+  sandbox.on('bundleError', function (err) {
+    ui.$spinner.addClass('hidden')
+    ui.tooltipMessage('error', 'Bundling error: \n\n' + err)
+  })
+
   githubGist.getCode(gistID, function (err, code) {
     ui.$spinner.addClass('hidden')
     if (err) return ui.tooltipMessage('error', JSON.stringify(err))
@@ -294,29 +317,6 @@ function initialize () {
     } else {
       sandbox = createSandbox(sandboxOpts)
     }
-
-    // sandbox actions
-    sandbox.on('modules', function (modules) {
-      if (!modules) return
-      packagejson.dependencies = {}
-      modules.forEach(function (mod) {
-        if (mod.core) return
-        packagejson.dependencies[mod.name] = mod.version
-      })
-    })
-
-    sandbox.on('bundleStart', function () {
-      ui.$spinner.removeClass('hidden')
-    })
-
-    sandbox.on('bundleEnd', function (bundle) {
-      ui.$spinner.addClass('hidden')
-    })
-
-    sandbox.on('bundleError', function (err) {
-      ui.$spinner.addClass('hidden')
-      ui.tooltipMessage('error', 'Bundling error: \n\n' + err)
-    })
 
     if (parsedURL.query.save) return
 

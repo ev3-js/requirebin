@@ -1453,7 +1453,39 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":10,"once":11,"parse-headers":12}],9:[function(require,module,exports){
+},{"global/window":10,"once":11,"parse-headers":12}],10:[function(require,module,exports){
+var global=self;if (typeof window !== "undefined") {
+    module.exports = window;
+} else if (typeof global !== "undefined") {
+    module.exports = global;
+} else if (typeof self !== "undefined"){
+    module.exports = self;
+} else {
+    module.exports = {};
+}
+
+},{}],11:[function(require,module,exports){
+module.exports = once
+
+once.proto = once(function () {
+  Object.defineProperty(Function.prototype, 'once', {
+    value: function () {
+      return once(this)
+    },
+    configurable: true
+  })
+})
+
+function once (fn) {
+  var called = false
+  return function () {
+    if (called) return
+    called = true
+    return fn.apply(this, arguments)
+  }
+}
+
+},{}],9:[function(require,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -1652,39 +1684,7 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":13}],10:[function(require,module,exports){
-var global=self;if (typeof window !== "undefined") {
-    module.exports = window;
-} else if (typeof global !== "undefined") {
-    module.exports = global;
-} else if (typeof self !== "undefined"){
-    module.exports = self;
-} else {
-    module.exports = {};
-}
-
-},{}],11:[function(require,module,exports){
-module.exports = once
-
-once.proto = once(function () {
-  Object.defineProperty(Function.prototype, 'once', {
-    value: function () {
-      return once(this)
-    },
-    configurable: true
-  })
-})
-
-function once (fn) {
-  var called = false
-  return function () {
-    if (called) return
-    called = true
-    return fn.apply(this, arguments)
-  }
-}
-
-},{}],13:[function(require,module,exports){
+},{"ms":13}],13:[function(require,module,exports){
 /**
  * Helpers.
  */

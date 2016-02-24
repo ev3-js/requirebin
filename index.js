@@ -134,7 +134,7 @@ function initialize () {
         }
         ui.$spinner.addClass('hidden')
         if (err) ui.tooltipMessage('error', err.toString())
-        if (newGistId && newGist.id !== id) window.location.href = '/?gist=' + newGistId
+        if (newGistId) window.location.href = '/?gist=' + newGistId
       })
     })
   }
@@ -328,6 +328,28 @@ function initialize () {
       actions.load()
     }
 
+    sandbox.on('modules', function (modules) {
+      if (!modules) return
+      packagejson.dependencies = {}
+      modules.forEach(function (mod) {
+        if (mod.core) return
+        packagejson.dependencies[mod.name] = mod.version
+      })
+    })
+
+    sandbox.on('bundleStart', function () {
+      ui.$spinner.removeClass('hidden')
+    })
+
+    sandbox.on('bundleEnd', function (bundle) {
+      ui.$spinner.addClass('hidden')
+    })
+
+    sandbox.on('bundleError', function (err) {
+      ui.$spinner.addClass('hidden')
+      ui.tooltipMessage('error', 'Bundling error: \n\n' + err)
+    })
+
     keydown(['<meta>', '<enter>']).on('pressed', actions.play)
     keydown(['<control>', '<enter>']).on('pressed', actions.play)
     keydown(['<meta>', 'S']).on('pressed', function (pressed, e) {
@@ -353,28 +375,5 @@ function initialize () {
       actions.play()
       // sandbox actions
     }, 500)
-  })
-  setTimeout(function () {
-    sandbox.on('modules', function (modules) {
-      if (!modules) return
-      packagejson.dependencies = {}
-      modules.forEach(function (mod) {
-        if (mod.core) return
-        packagejson.dependencies[mod.name] = mod.version
-      })
-    })
-
-    sandbox.on('bundleStart', function () {
-      ui.$spinner.removeClass('hidden')
-    })
-
-    sandbox.on('bundleEnd', function (bundle) {
-      ui.$spinner.addClass('hidden')
-    })
-
-    sandbox.on('bundleError', function (err) {
-      ui.$spinner.addClass('hidden')
-      ui.tooltipMessage('error', 'Bundling error: \n\n' + err)
-    })
   })
 }

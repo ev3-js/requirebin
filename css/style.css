@@ -184,7 +184,7 @@ body > pre { display: none }
   padding: 10px 14px;
 }
 
-.btn.btn-primary.primary {
+.btn.btn-primary.primary, .btn.btn-default.primary {
   background-color: #78AAD6;
 }
 

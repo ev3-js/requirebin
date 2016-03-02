@@ -206,7 +206,6 @@ function initialize () {
       ui.$preview.removeClass('disabled')
       ui.$spinner.addClass('hidden')
       doBundle()
-      if (loggedIn) return saveGist(gistID)
     },
 
     load: function () {

@@ -224,7 +224,10 @@ function initialize () {
 
     save: function (name) {
       if (loggedIn) {
-        return saveGist(name, gistID)
+        $('#load-dialog').modal()
+        var Modal = new ModalBody(document.getElementById('modal-body'))
+        Modal.clear()
+        return Modal.createForm()
       }
       ui.$spinner.removeClass('hidden')
       startLogin()
@@ -241,11 +244,7 @@ function initialize () {
     },
 
     login: function () {
-      $('#load-dialog').modal()
-      var Modal = new ModalBody(document.getElementById('modal-body'))
-      Modal.clear()
-      return Modal.createForm()
-      // startLogin()
+      startLogin()
     },
 
     'save-name': function (name) {

@@ -324,7 +324,7 @@ function initialize () {
     })
 
     $('#save').click(function () {
-      actions.save($('#name').val())
+      saveGist($('#name').val(), gistID)
     })
 
     // call actions.play from the button located in the instructions

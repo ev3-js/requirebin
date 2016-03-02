@@ -384,3 +384,18 @@ body > pre { display: none }
   max-height: 400px;
   overflow-y: auto;
 }
+
+#modal-body {
+  margin: 0;
+}
+
+.form-container {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.form-container > input {
+  margin: 0;
+  margin-left: 10px;
+}

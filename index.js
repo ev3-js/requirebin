@@ -13,6 +13,7 @@ var Gist = require('./lib/github-gist.js')
 var ui = require('./lib/ui-controller')
 var editors = window.editors = require('./lib/editors')
 var WindowConsole = require('./lib/console')
+var ModalBody = require('./lib/modal-body')
 
 initialize()
 
@@ -64,7 +65,6 @@ function initialize () {
     auth: 'oauth'
   })
   var packagejson = {
-    'name': 'requirebin-sketch',
     'version': '1.0.0',
     'dependencies': {
       'cycle-shell': '0.3.5',
@@ -120,8 +120,7 @@ function initialize () {
       cookie.set('oauth-token', data.token)
       // Adjust URL
       var regex = new RegExp('\\?code=' + match[1])
-      var ext = localStorage.getItem('state') ? '?' + localStorage.getItem('state') + '=true' : ''
-      window.location.href = window.location.href.replace(regex, '').replace('&state=', '') + ext
+      window.location.href = window.location.href.replace(regex, '').replace('&state=', '')
     })
 
     return true
@@ -131,7 +130,7 @@ function initialize () {
     return JSON.stringify(packagejson, null, '  ')
   }
 
-  function saveGist (id, opts) {
+  function saveGist (name, id, opts) {
     ui.$spinner.removeClass('hidden')
     var entry = editors.get('bundle').getValue()
     opts = opts || {}
@@ -139,10 +138,8 @@ function initialize () {
 
     doBundle()
     sandbox.once('bundleEnd', function (bundle) {
-      var jsonCode = editors.get('meta').getValue()
-      var json = jsonCode ? JSON.parse(jsonCode) : window.packagejson
       var gist = {
-        'description': json.name,
+        'description': name,
         'public': opts.isPublic,
         'files': {
           'index.js': {
@@ -209,6 +206,7 @@ function initialize () {
       ui.$preview.removeClass('disabled')
       ui.$spinner.addClass('hidden')
       doBundle()
+      if (loggedIn) return saveGist(gistID)
     },
 
     load: function () {
@@ -216,7 +214,6 @@ function initialize () {
         $('#load-dialog').modal()
         return githubGist.getList()
       }
-      localStorage.setItem('state', 'load')
       startLogin()
     },
 
@@ -225,10 +222,11 @@ function initialize () {
       $('#preview-btn').attr('href', src)
     },
 
-    save: function () {
-      if (loggedIn) return saveGist(gistID)
+    save: function (name) {
+      if (loggedIn) {
+        return saveGist(name, gistID)
+      }
       ui.$spinner.removeClass('hidden')
-      localStorage.setItem('state', 'save')
       startLogin()
     },
 
@@ -243,11 +241,17 @@ function initialize () {
     },
 
     login: function () {
-      localStorage.removeItem('state')
-      startLogin()
+      $('#load-dialog').modal()
+      var Modal = new ModalBody(document.getElementById('modal-body'))
+      Modal.clear()
+      return Modal.createForm()
+      // startLogin()
+    },
+
+    'save-name': function (name) {
+      this.save(name)
     }
   }
-
 
   function startLogin () {
     var loginURL = 'https://github.com/login/oauth/authorize' +
@@ -319,6 +323,10 @@ function initialize () {
       var target = $(this)
       var action = target.attr('data-action')
       if (action in actions) actions[action]()
+    })
+
+    $('#save').click(function () {
+      actions.save($('#name').val())
     })
 
     // call actions.play from the button located in the instructions

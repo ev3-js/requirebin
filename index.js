@@ -69,7 +69,7 @@ function initialize () {
   var packagejson = {
     'version': '1.0.0',
     'dependencies': {
-      'cycle-shell': '0.3.8',
+      'cycle-shell': '0.3.9',
       'iframe-console': '0.1.9'
     }
   }

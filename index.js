@@ -21,6 +21,7 @@ function initialize () {
   var sandbox
   var gistID
   var Console = new WindowConsole()
+  var username = ''
   // dom nodes
   var outputEl = document.querySelector('#play')
   var actionsMenu = $('.actionsMenu')
@@ -78,6 +79,7 @@ function initialize () {
   var loggedIn = false
   if (cookie.get('oauth-token')) {
     $('#login').hide()
+    username = githubGist.getUser()
     loggedIn = true
   }
 
@@ -174,6 +176,7 @@ function initialize () {
   // if gistID is not set, fallback to specific queryParams, local storage
 
   if (loggedIn) {
+    $('#username').val(username)
     actionsMenu.dropkick({
       change: function (value, label) {
         if (value === 'noop') return

@@ -45,7 +45,7 @@
     "github-api": "0.7.0",
     "github-oauth": "0.0.4",
     "iframe": "git://github.com/npm-dom/iframe.git",
-    "iframe-console": "^0.1.8",
+    "iframe-console": "^0.1.9",
     "inherits": "^2.0.1",
     "javascript-editor-esprima": "^1.0.1",
     "jshint": "^2.9.1",

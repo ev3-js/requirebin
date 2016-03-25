@@ -69,7 +69,7 @@ function initialize () {
     'version': '1.0.0',
     'dependencies': {
       'cycle-shell': '^0.3.5',
-      'iframe-console': '^0.1.8'
+      'iframe-console': '^0.1.9'
     }
   }
   var parsedURL = url.parse(window.location.href, true)

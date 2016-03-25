@@ -138,7 +138,7 @@ Sandbox.prototype.bundle = function(entry, preferredVersions) {
     script = script + entry
 
     // setTimeout is because iframes report inaccurate window.innerWidth/innerHeight, even after DOMContentLoaded!
-    script = 'setTimeout(function(){\n;' + script + '\n;}, 0)'
+    script = 'setTimeout(function(){\n;' + script + '\n;})'
 
     // check for </script> in code to use faster way executing script (https://github.com/maxogden/browser-module-sandbox/issues/13)
     var scriptTag = script.indexOf('</script>') === -1 ? (

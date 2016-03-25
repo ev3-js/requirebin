@@ -68,8 +68,8 @@ function initialize () {
   var packagejson = {
     'version': '1.0.0',
     'dependencies': {
-      'cycle-shell': '0.3.5',
-      'iframe-console': '0.1.6'
+      'cycle-shell': '^0.3.5',
+      'iframe-console': '^0.1.7'
     }
   }
   var parsedURL = url.parse(window.location.href, true)

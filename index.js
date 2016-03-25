@@ -73,6 +73,7 @@ function initialize () {
       'iframe-console': '0.1.9'
     }
   }
+  console.log(packagejson)
   var parsedURL = url.parse(window.location.href, true)
   var gistTokens = Gist.fromUrl(parsedURL)
   window.packagejson = packagejson

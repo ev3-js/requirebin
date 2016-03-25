@@ -57,6 +57,7 @@ function initialize () {
 
     sandbox.on('bundleError', function (err) {
       ui.$spinner.addClass('hidden')
+      console.log(err.stack)
       ui.tooltipMessage('error', 'Bundling error: \n\n' + err)
     })
   }
@@ -68,7 +69,7 @@ function initialize () {
   var packagejson = {
     'version': '1.0.0',
     'dependencies': {
-      'cycle-shell': '0.3.5',
+      'cycle-shell': '0.3.8',
       'iframe-console': '0.1.9'
     }
   }
@@ -100,7 +101,7 @@ function initialize () {
   if (parsedURL.port) currentHost += ':' + parsedURL.port
 
   function doBundle () {
-    var addRequires = 'require("cycle-shell")(main)\nrequire("iframe-console")()\n\n'
+    var addRequires = 'require("cycle-shell")(main)\n\n'
     sandbox.iframeHead = editors.get('head').getValue()
     sandbox.iframeBody = editors.get('body').getValue()
     packagejson = packagejson ? window.packagejson : packagejson

@@ -117,7 +117,7 @@ function changeEditor (hash) {
   $('#' + hash + '-link').addClass('btn-primary')
 }
 
-},{"./get-gist-files":2,"iframe":4,"jsonp":5,"url":3}],4:[function(require,module,exports){
+},{"./get-gist-files":2,"iframe":5,"jsonp":4,"url":3}],5:[function(require,module,exports){
 module.exports = function(opts) {
   return new IFrame(opts)
 }
@@ -1133,7 +1133,7 @@ function decode(str) {
   }
 }
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 
 /**
  * Module dependencies
@@ -1587,27 +1587,6 @@ var global=self;if (typeof window !== "undefined") {
     module.exports = {};
 }
 
-},{}],12:[function(require,module,exports){
-module.exports = once
-
-once.proto = once(function () {
-  Object.defineProperty(Function.prototype, 'once', {
-    value: function () {
-      return once(this)
-    },
-    configurable: true
-  })
-})
-
-function once (fn) {
-  var called = false
-  return function () {
-    if (called) return
-    called = true
-    return fn.apply(this, arguments)
-  }
-}
-
 },{}],10:[function(require,module,exports){
 
 /**
@@ -1807,7 +1786,28 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":14}],14:[function(require,module,exports){
+},{"ms":14}],12:[function(require,module,exports){
+module.exports = once
+
+once.proto = once(function () {
+  Object.defineProperty(Function.prototype, 'once', {
+    value: function () {
+      return once(this)
+    },
+    configurable: true
+  })
+})
+
+function once (fn) {
+  var called = false
+  return function () {
+    if (called) return
+    called = true
+    return fn.apply(this, arguments)
+  }
+}
+
+},{}],14:[function(require,module,exports){
 /**
  * Helpers.
  */

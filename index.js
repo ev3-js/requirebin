@@ -70,7 +70,8 @@ function initialize () {
     'version': '1.0.0',
     'dependencies': {
       'cycle-shell': '0.3.9',
-      'iframe-console': '0.1.9'
+      'iframe-console': '0.1.9',
+      'ev3-client': '0.1.30'
     }
   }
   console.log(packagejson)

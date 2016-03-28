@@ -71,7 +71,7 @@ function initialize () {
     'dependencies': {
       'cycle-shell': '0.3.9',
       'iframe-console': '0.1.11',
-      'ev3-client': '0.1.32'
+      'ev3-client': '0.1.33'
     }
   }
   var parsedURL = url.parse(window.location.href, true)

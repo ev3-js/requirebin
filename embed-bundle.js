@@ -1,4 +1,62 @@
 ;(function(e,t,n){function i(n,s){if(!t[n]){if(!e[n]){var o=typeof require=="function"&&require;if(!s&&o)return o(n,!0);if(r)return r(n,!0);throw new Error("Cannot find module '"+n+"'")}var u=t[n]={exports:{}};e[n][0].call(u.exports,function(t){var r=e[n][1][t];return i(r?r:t)},u,u.exports)}return t[n].exports}var r=typeof require=="function"&&require;for(var s=0;s<n.length;s++)i(n[s]);return i})({1:[function(require,module,exports){
+var jsonp = require('jsonp')
+var url = require('url')
+var getGistFiles = require('./get-gist-files')
+var $ = window.jQuery
+var parsedURL = url.parse(window.location.href, true)
+var gistID = parsedURL.query.gist
+
+var binURL = '/?gist=' + gistID
+var link = document.querySelector('.requirebin-link')
+if (link) link.setAttribute('href', binURL)
+
+if (gistID.indexOf('/') > -1) gistID = gistID.split('/')[1]
+loadFromAPI(gistID)
+
+function loadFromAPI (gistID) {
+  jsonp('https://api.github.com/gists/' + gistID, function (err, gist) {
+    if (err) return console.log(err)
+
+    getGistFiles(gist, ['page-head.html', 'page-body.html', 'head.html', 'minified.js'], function (err) {
+      if (err) return console.log(err)
+      var files = gist.data.files
+      var head
+      var body
+      var bundle
+
+      var headFile = files['page-head.html'] || files['head.html']
+      if (headFile) {
+        head = headFile.content
+      }
+      if (files['page-body.html']) {
+        body = files['page-body.html'].content
+      }
+      if (files['minified.js']) {
+        bundle = files['minified.js'].content
+      }
+      render(head, body, bundle)
+    })
+  })
+}
+
+function render (head, body, bundle) {
+  if (head) document.head.innerHTML += head
+  if (body) {
+    $(document.body).append($.parseHTML(body, document, true))
+  }
+
+  if (!bundle) {
+    document.body.innerHTML += 'not a valid requirebin gist - missing minified.js'
+  } else {
+    $(document.body).append(
+      $('<script />')
+        .attr('type', 'text/javascript')
+        .text('setTimeout(function () {' + bundle + '}, 1000)')
+    )
+  }
+}
+
+},{"./get-gist-files":2,"jsonp":4,"url":3}],3:[function(require,module,exports){
 var punycode = { encode : function (s) { return s } };
 
 exports.parse = urlParse;
@@ -604,65 +662,36 @@ function parseHost(host) {
   return out;
 }
 
-},{"querystring":2}],3:[function(require,module,exports){
-var jsonp = require('jsonp')
-var url = require('url')
-var getGistFiles = require('./get-gist-files')
-var $ = window.jQuery
-var parsedURL = url.parse(window.location.href, true)
-var gistID = parsedURL.query.gist
+},{"querystring":5}],2:[function(require,module,exports){
+var nets = require('nets')
 
-var binURL = '/?gist=' + gistID
-var link = document.querySelector('.requirebin-link')
-if (link) link.setAttribute('href', binURL)
+module.exports = getGistFiles
 
-if (gistID.indexOf('/') > -1) gistID = gistID.split('/')[1]
-loadFromAPI(gistID)
+function getGistFiles (gist, keys, callback) {
+  var files = gist.data.files
 
-function loadFromAPI (gistID) {
-  jsonp('https://api.github.com/gists/' + gistID, function (err, gist) {
-    if (err) return console.log(err)
-
-    getGistFiles(gist, ['page-head.html', 'page-body.html', 'head.html', 'minified.js'], function (err) {
-      if (err) return console.log(err)
-      var files = gist.data.files
-      var head
-      var body
-      var bundle
-
-      var headFile = files['page-head.html'] || files['head.html']
-      if (headFile) {
-        head = headFile.content
-      }
-      if (files['page-body.html']) {
-        body = files['page-body.html'].content
-      }
-      if (files['minified.js']) {
-        bundle = files['minified.js'].content
-      }
-      render(head, body, bundle)
-    })
+  var truncated = keys.filter(function (name) {
+    return files[name] && files[name].truncated
   })
+
+  if (truncated.length === 0) return callback(null, gist)
+
+  getNext()
+
+  function getNext () {
+    var file = truncated.pop()
+    if (!file) return callback(null, gist)
+    nets({url: files[file].raw_url}, done)
+
+    function done (err, resp, content) {
+      if (err) return callback(err)
+      files[file].content = content
+      setTimeout(getNext)
+    }
+  }
 }
 
-function render (head, body, bundle) {
-  if (head) document.head.innerHTML += head
-  if (body) {
-    $(document.body).append($.parseHTML(body, document, true))
-  }
-
-  if (!bundle) {
-    document.body.innerHTML += 'not a valid requirebin gist - missing minified.js'
-  } else {
-    $(document.body).append(
-      $('<script />')
-        .attr('type', 'text/javascript')
-        .text('setTimeout(function () {' + bundle + '}, 1000)')
-    )
-  }
-}
-
-},{"./get-gist-files":4,"jsonp":5,"url":1}],2:[function(require,module,exports){
+},{"nets":6}],5:[function(require,module,exports){
 
 /**
  * Object#toString() ref for stringify().
@@ -982,35 +1011,6 @@ function decode(str) {
 }
 
 },{}],4:[function(require,module,exports){
-var nets = require('nets')
-
-module.exports = getGistFiles
-
-function getGistFiles (gist, keys, callback) {
-  var files = gist.data.files
-
-  var truncated = keys.filter(function (name) {
-    return files[name] && files[name].truncated
-  })
-
-  if (truncated.length === 0) return callback(null, gist)
-
-  getNext()
-
-  function getNext () {
-    var file = truncated.pop()
-    if (!file) return callback(null, gist)
-    nets({url: files[file].raw_url}, done)
-
-    function done (err, resp, content) {
-      if (err) return callback(err)
-      files[file].content = content
-      setTimeout(getNext)
-    }
-  }
-}
-
-},{"nets":6}],5:[function(require,module,exports){
 
 /**
  * Module dependencies
@@ -1453,7 +1453,39 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":10,"once":11,"parse-headers":12}],9:[function(require,module,exports){
+},{"global/window":10,"once":11,"parse-headers":12}],10:[function(require,module,exports){
+var global=self;if (typeof window !== "undefined") {
+    module.exports = window;
+} else if (typeof global !== "undefined") {
+    module.exports = global;
+} else if (typeof self !== "undefined"){
+    module.exports = self;
+} else {
+    module.exports = {};
+}
+
+},{}],11:[function(require,module,exports){
+module.exports = once
+
+once.proto = once(function () {
+  Object.defineProperty(Function.prototype, 'once', {
+    value: function () {
+      return once(this)
+    },
+    configurable: true
+  })
+})
+
+function once (fn) {
+  var called = false
+  return function () {
+    if (called) return
+    called = true
+    return fn.apply(this, arguments)
+  }
+}
+
+},{}],9:[function(require,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -1652,39 +1684,7 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":13}],11:[function(require,module,exports){
-module.exports = once
-
-once.proto = once(function () {
-  Object.defineProperty(Function.prototype, 'once', {
-    value: function () {
-      return once(this)
-    },
-    configurable: true
-  })
-})
-
-function once (fn) {
-  var called = false
-  return function () {
-    if (called) return
-    called = true
-    return fn.apply(this, arguments)
-  }
-}
-
-},{}],10:[function(require,module,exports){
-var global=self;if (typeof window !== "undefined") {
-    module.exports = window;
-} else if (typeof global !== "undefined") {
-    module.exports = global;
-} else if (typeof self !== "undefined"){
-    module.exports = self;
-} else {
-    module.exports = {};
-}
-
-},{}],13:[function(require,module,exports){
+},{"ms":13}],13:[function(require,module,exports){
 /**
  * Helpers.
  */
@@ -1924,5 +1924,5 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}]},{},[3])
+},{}]},{},[1])
 ;

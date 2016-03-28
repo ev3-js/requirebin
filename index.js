@@ -70,11 +70,10 @@ function initialize () {
     'version': '1.0.0',
     'dependencies': {
       'cycle-shell': '0.3.9',
-      'iframe-console': '0.1.10',
+      'iframe-console': '0.1.11',
       'ev3-client': '0.1.30'
     }
   }
-  console.log(packagejson)
   var parsedURL = url.parse(window.location.href, true)
   var gistTokens = Gist.fromUrl(parsedURL)
   window.packagejson = packagejson
@@ -103,7 +102,7 @@ function initialize () {
   if (parsedURL.port) currentHost += ':' + parsedURL.port
 
   function doBundle () {
-    var addRequires = 'require("cycle-shell")(main)\n\n'
+    var addRequires = 'require("cycle-shell")(main)\nrequire("iframe-console")()\n\n'
     sandbox.iframeHead = editors.get('head').getValue()
     sandbox.iframeBody = editors.get('body').getValue()
     packagejson = packagejson ? window.packagejson : packagejson

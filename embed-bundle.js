@@ -1096,15 +1096,7 @@ function jsonp(url, opts, fn){
   target.parentNode.insertBefore(script, target);
 };
 
-},{"debug":7}],6:[function(require,module,exports){
-var req = require('request')
-
-module.exports = Nets
-
-function Nets(uri, opts, cb) {
-  req(uri, opts, cb)
-}
-},{"request":8}],7:[function(require,module,exports){
+},{"debug":7}],7:[function(require,module,exports){
 
 /**
  * This is the web browser implementation of `debug()`.
@@ -1274,7 +1266,15 @@ function localstorage(){
   } catch (e) {}
 }
 
-},{"./debug":9}],8:[function(require,module,exports){
+},{"./debug":8}],6:[function(require,module,exports){
+var req = require('request')
+
+module.exports = Nets
+
+function Nets(uri, opts, cb) {
+  req(uri, opts, cb)
+}
+},{"request":9}],9:[function(require,module,exports){
 var window = require("global/window")
 var once = require("once")
 var parseHeaders = require('parse-headers')
@@ -1453,18 +1453,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":10,"once":11,"parse-headers":12}],10:[function(require,module,exports){
-var global=self;if (typeof window !== "undefined") {
-    module.exports = window;
-} else if (typeof global !== "undefined") {
-    module.exports = global;
-} else if (typeof self !== "undefined"){
-    module.exports = self;
-} else {
-    module.exports = {};
-}
-
-},{}],9:[function(require,module,exports){
+},{"global/window":10,"once":12,"parse-headers":11}],8:[function(require,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -1663,7 +1652,18 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":13}],11:[function(require,module,exports){
+},{"ms":13}],10:[function(require,module,exports){
+var global=self;if (typeof window !== "undefined") {
+    module.exports = window;
+} else if (typeof global !== "undefined") {
+    module.exports = global;
+} else if (typeof self !== "undefined"){
+    module.exports = self;
+} else {
+    module.exports = {};
+}
+
+},{}],12:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -1811,7 +1811,7 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {

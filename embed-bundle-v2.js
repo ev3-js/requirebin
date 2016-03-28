@@ -785,7 +785,36 @@ IFrame.prototype.setHTML = function(opts) {
   this.iframe = neighborIframes[neighborIframes.length-1]
 }
 
-},{}],6:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
+var nets = require('nets')
+
+module.exports = getGistFiles
+
+function getGistFiles (gist, keys, callback) {
+  var files = gist.data.files
+
+  var truncated = keys.filter(function (name) {
+    return files[name] && files[name].truncated
+  })
+
+  if (truncated.length === 0) return callback(null, gist)
+
+  getNext()
+
+  function getNext () {
+    var file = truncated.pop()
+    if (!file) return callback(null, gist)
+    nets({url: files[file].raw_url}, done)
+
+    function done (err, resp, content) {
+      if (err) return callback(err)
+      files[file].content = content
+      setTimeout(getNext)
+    }
+  }
+}
+
+},{"nets":7}],6:[function(require,module,exports){
 
 /**
  * Object#toString() ref for stringify().
@@ -1104,36 +1133,7 @@ function decode(str) {
   }
 }
 
-},{}],2:[function(require,module,exports){
-var nets = require('nets')
-
-module.exports = getGistFiles
-
-function getGistFiles (gist, keys, callback) {
-  var files = gist.data.files
-
-  var truncated = keys.filter(function (name) {
-    return files[name] && files[name].truncated
-  })
-
-  if (truncated.length === 0) return callback(null, gist)
-
-  getNext()
-
-  function getNext () {
-    var file = truncated.pop()
-    if (!file) return callback(null, gist)
-    nets({url: files[file].raw_url}, done)
-
-    function done (err, resp, content) {
-      if (err) return callback(err)
-      files[file].content = content
-      setTimeout(getNext)
-    }
-  }
-}
-
-},{"nets":7}],4:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 
 /**
  * Module dependencies
@@ -1219,7 +1219,15 @@ function jsonp(url, opts, fn){
   target.parentNode.insertBefore(script, target);
 };
 
-},{"debug":8}],8:[function(require,module,exports){
+},{"debug":8}],7:[function(require,module,exports){
+var req = require('request')
+
+module.exports = Nets
+
+function Nets(uri, opts, cb) {
+  req(uri, opts, cb)
+}
+},{"request":9}],8:[function(require,module,exports){
 
 /**
  * This is the web browser implementation of `debug()`.
@@ -1389,15 +1397,7 @@ function localstorage(){
   } catch (e) {}
 }
 
-},{"./debug":9}],7:[function(require,module,exports){
-var req = require('request')
-
-module.exports = Nets
-
-function Nets(uri, opts, cb) {
-  req(uri, opts, cb)
-}
-},{"request":10}],10:[function(require,module,exports){
+},{"./debug":10}],9:[function(require,module,exports){
 var window = require("global/window")
 var once = require("once")
 var parseHeaders = require('parse-headers')
@@ -1576,7 +1576,39 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":11,"once":13,"parse-headers":12}],9:[function(require,module,exports){
+},{"global/window":11,"once":12,"parse-headers":13}],11:[function(require,module,exports){
+var global=self;if (typeof window !== "undefined") {
+    module.exports = window;
+} else if (typeof global !== "undefined") {
+    module.exports = global;
+} else if (typeof self !== "undefined"){
+    module.exports = self;
+} else {
+    module.exports = {};
+}
+
+},{}],12:[function(require,module,exports){
+module.exports = once
+
+once.proto = once(function () {
+  Object.defineProperty(Function.prototype, 'once', {
+    value: function () {
+      return once(this)
+    },
+    configurable: true
+  })
+})
+
+function once (fn) {
+  var called = false
+  return function () {
+    if (called) return
+    called = true
+    return fn.apply(this, arguments)
+  }
+}
+
+},{}],10:[function(require,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -1775,39 +1807,7 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":14}],11:[function(require,module,exports){
-var global=self;if (typeof window !== "undefined") {
-    module.exports = window;
-} else if (typeof global !== "undefined") {
-    module.exports = global;
-} else if (typeof self !== "undefined"){
-    module.exports = self;
-} else {
-    module.exports = {};
-}
-
-},{}],13:[function(require,module,exports){
-module.exports = once
-
-once.proto = once(function () {
-  Object.defineProperty(Function.prototype, 'once', {
-    value: function () {
-      return once(this)
-    },
-    configurable: true
-  })
-})
-
-function once (fn) {
-  var called = false
-  return function () {
-    if (called) return
-    called = true
-    return fn.apply(this, arguments)
-  }
-}
-
-},{}],14:[function(require,module,exports){
+},{"ms":14}],14:[function(require,module,exports){
 /**
  * Helpers.
  */
@@ -1934,7 +1934,7 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {

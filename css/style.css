@@ -223,6 +223,19 @@ body > pre { display: none }
   cursor: pointer;
 }
 
+#counter-container {
+  display: none;
+  margin: 0 5px;
+}
+
+#counter-container.show {
+  display: inline-block;
+}
+
+#counter-container * {
+  display: inline-block;
+}
+
 #console-container #console-toolbar #console-header {
   flex: 4;
   margin: 0;

@@ -1096,7 +1096,15 @@ function jsonp(url, opts, fn){
   target.parentNode.insertBefore(script, target);
 };
 
-},{"debug":7}],7:[function(require,module,exports){
+},{"debug":7}],6:[function(require,module,exports){
+var req = require('request')
+
+module.exports = Nets
+
+function Nets(uri, opts, cb) {
+  req(uri, opts, cb)
+}
+},{"request":8}],7:[function(require,module,exports){
 
 /**
  * This is the web browser implementation of `debug()`.
@@ -1266,15 +1274,7 @@ function localstorage(){
   } catch (e) {}
 }
 
-},{"./debug":8}],6:[function(require,module,exports){
-var req = require('request')
-
-module.exports = Nets
-
-function Nets(uri, opts, cb) {
-  req(uri, opts, cb)
-}
-},{"request":9}],8:[function(require,module,exports){
+},{"./debug":9}],9:[function(require,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -1473,7 +1473,28 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":10}],10:[function(require,module,exports){
+},{"ms":10}],11:[function(require,module,exports){
+module.exports = once
+
+once.proto = once(function () {
+  Object.defineProperty(Function.prototype, 'once', {
+    value: function () {
+      return once(this)
+    },
+    configurable: true
+  })
+})
+
+function once (fn) {
+  var called = false
+  return function () {
+    if (called) return
+    called = true
+    return fn.apply(this, arguments)
+  }
+}
+
+},{}],10:[function(require,module,exports){
 /**
  * Helpers.
  */
@@ -1600,7 +1621,7 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var window = require("global/window")
 var once = require("once")
 var parseHeaders = require('parse-headers')
@@ -1779,39 +1800,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":11,"once":13,"parse-headers":12}],13:[function(require,module,exports){
-module.exports = once
-
-once.proto = once(function () {
-  Object.defineProperty(Function.prototype, 'once', {
-    value: function () {
-      return once(this)
-    },
-    configurable: true
-  })
-})
-
-function once (fn) {
-  var called = false
-  return function () {
-    if (called) return
-    called = true
-    return fn.apply(this, arguments)
-  }
-}
-
-},{}],11:[function(require,module,exports){
-var global=self;if (typeof window !== "undefined") {
-    module.exports = window;
-} else if (typeof global !== "undefined") {
-    module.exports = global;
-} else if (typeof self !== "undefined"){
-    module.exports = self;
-} else {
-    module.exports = {};
-}
-
-},{}],12:[function(require,module,exports){
+},{"global/window":13,"once":11,"parse-headers":12}],12:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -1843,23 +1832,7 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":14,"trim":15}],15:[function(require,module,exports){
-
-exports = module.exports = trim;
-
-function trim(str){
-  return str.replace(/^\s*|\s*$/g, '');
-}
-
-exports.left = function(str){
-  return str.replace(/^\s*/, '');
-};
-
-exports.right = function(str){
-  return str.replace(/\s*$/, '');
-};
-
-},{}],14:[function(require,module,exports){
+},{"for-each":14,"trim":15}],14:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -1907,7 +1880,18 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":16}],16:[function(require,module,exports){
+},{"is-function":16}],13:[function(require,module,exports){
+var global=self;if (typeof window !== "undefined") {
+    module.exports = window;
+} else if (typeof global !== "undefined") {
+    module.exports = global;
+} else if (typeof self !== "undefined"){
+    module.exports = self;
+} else {
+    module.exports = {};
+}
+
+},{}],16:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -1922,6 +1906,22 @@ function isFunction (fn) {
       fn === window.alert ||
       fn === window.confirm ||
       fn === window.prompt))
+};
+
+},{}],15:[function(require,module,exports){
+
+exports = module.exports = trim;
+
+function trim(str){
+  return str.replace(/^\s*|\s*$/g, '');
+}
+
+exports.left = function(str){
+  return str.replace(/^\s*/, '');
+};
+
+exports.right = function(str){
+  return str.replace(/\s*$/, '');
 };
 
 },{}]},{},[1])

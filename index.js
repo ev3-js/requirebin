@@ -339,17 +339,6 @@ function initialize () {
       return false
     })
 
-    $('#console-button').click(function (e) {
-      e.stopPropagation()
-      e.preventDefault()
-      Console.clear()
-    })
-
-    $('#console-toolbar').click(function (e) {
-      e.preventDefault()
-      $('#console-container').toggleClass('minimize')
-    })
-
     if (parsedURL.query.load) {
       actions.load()
     }

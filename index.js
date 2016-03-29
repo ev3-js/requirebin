@@ -7,6 +7,7 @@ var url = require('url')
 var request = require('browser-request')
 var detective = require('detective')
 var keydown = require('keydown-with-event')
+var autoYield = require('auto-yield').default
 
 var cookie = require('./lib/cookie')
 var Gist = require('./lib/github-gist.js')
@@ -106,7 +107,11 @@ function initialize () {
     sandbox.iframeHead = editors.get('head').getValue()
     sandbox.iframeBody = editors.get('body').getValue()
     packagejson = packagejson ? window.packagejson : packagejson
-    sandbox.bundle(addRequires + editors.get('bundle').getValue(), packagejson.dependencies)
+    var bundle = editors.get('bundle').getValue()
+    if (packagejson.dependencies['ev3-client']) {
+      bundle = autoYield(bundle, ['read', 'sleep'], ['move', 'motor'])
+    }
+    sandbox.bundle(addRequires + bundle, packagejson.dependencies)
   }
 
   // todo: move to auth.js

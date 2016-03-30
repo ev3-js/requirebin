@@ -7,7 +7,7 @@ var url = require('url')
 var request = require('browser-request')
 var detective = require('detective')
 var keydown = require('keydown-with-event')
-var autoYield = require('auto-yield').default
+var autoYield = require('auto-yield')
 
 var cookie = require('./lib/cookie')
 var Gist = require('./lib/github-gist.js')
@@ -111,6 +111,7 @@ function initialize () {
     if (packagejson.dependencies['ev3-client']) {
       bundle = autoYield(bundle, ['read', 'sleep'], ['move', 'motor'])
     }
+    console.log(bundle)
     sandbox.bundle(addRequires + bundle, packagejson.dependencies)
   }
 

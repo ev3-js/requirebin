@@ -33,7 +33,7 @@
     "url": "git@github.com:maxogden/requirebin.git"
   },
   "dependencies": {
-    "auto-yield": "^0.2.0",
+    "auto-yield": "^0.2.3",
     "brace": "^0.7.0",
     "browser-module-cache": "^0.1.3",
     "browser-module-sandbox": "^1.4.0",

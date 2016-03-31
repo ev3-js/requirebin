@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
-    <title>Cycle Shell</title>
+    <title>EV3 Shell</title>
     <meta charset="utf-8">
     <link rel='shortcut icon' href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -32,7 +32,7 @@
     </div><!-- /.modal -->
 
     <div class="toolbar">
-      <h3 class="logo"><img src="img/cycle-shell.png">Cycle Shell</h3>
+      <h3 class="logo"><img src="img/cycle-shell.png">EV3 Shell</h3>
 
       <p class="tagline">
         Shareable JavaScript programs powered by
@@ -104,8 +104,13 @@
       <div id="console"></div>
     </div>
 
-<script id="bundle-template" type="text/template">function main (input) {
-  return input
+<script id="bundle-template" type="text/template">var {loop, move, motor, read, sleep, out} = require('robot-loop')
+loop(main, /*ip address*/)
+
+var steer = move()
+
+function main () {
+  steer.rotations(1, 40, 0)
 }
 </script>
   <script type="text/javascript" src="flatui-deps.js"></script>

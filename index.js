@@ -7,6 +7,7 @@ var url = require('url')
 var request = require('browser-request')
 var detective = require('detective')
 var keydown = require('keydown-with-event')
+var autoYield = require('auto-yield')
 
 var cookie = require('./lib/cookie')
 var Gist = require('./lib/github-gist.js')
@@ -69,9 +70,8 @@ function initialize () {
   var packagejson = {
     'version': '1.0.0',
     'dependencies': {
-      'cycle-shell': '0.3.9',
       'iframe-console': '0.1.13',
-      'ev3-client': '0.1.35'
+      'robot-loop': '0.1.13'
     }
   }
   var parsedURL = url.parse(window.location.href, true)
@@ -102,11 +102,15 @@ function initialize () {
   if (parsedURL.port) currentHost += ':' + parsedURL.port
 
   function doBundle () {
-    var addRequires = 'require("cycle-shell")(main)\nrequire("iframe-console")()\n\n'
+    var addRequires = 'require("iframe-console")()\n\n'
     sandbox.iframeHead = editors.get('head').getValue()
     sandbox.iframeBody = editors.get('body').getValue()
     packagejson = packagejson ? window.packagejson : packagejson
-    sandbox.bundle(addRequires + editors.get('bundle').getValue(), packagejson.dependencies)
+    var bundle = editors.get('bundle').getValue()
+    if (packagejson.dependencies['robot-loop']) {
+      bundle = autoYield(bundle, ['read', 'sleep', 'out'], ['move', 'motor'])
+    }
+    sandbox.bundle(addRequires + bundle, packagejson.dependencies)
   }
 
   // todo: move to auth.js
@@ -178,7 +182,7 @@ function initialize () {
   // if gistID is not set, fallback to specific queryParams, local storage
 
   if (loggedIn) {
-    $('#username').val(username)
+    $('#username').text(username)
     actionsMenu.dropkick({
       change: function (value, label) {
         if (value === 'noop') return

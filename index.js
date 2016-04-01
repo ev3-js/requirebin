@@ -185,7 +185,9 @@ function initialize () {
   // if gistID is not set, fallback to specific queryParams, local storage
 
   if (loggedIn) {
-    $('#username').text(username)
+    setTimeout(function () {
+      $('#username').text(username)
+    })
     actionsMenu.dropkick({
       change: function (value, label) {
         if (value === 'noop') return

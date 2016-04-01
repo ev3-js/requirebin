@@ -183,11 +183,7 @@ function initialize () {
 
   ui.$spinner.removeClass('hidden')
   // if gistID is not set, fallback to specific queryParams, local storage
-
-  if (loggedIn) {
-    setTimeout(function () {
-      $('#username').text(username)
-    })
+  function setDropDown () {
     actionsMenu.dropkick({
       change: function (value, label) {
         if (value === 'noop') return
@@ -198,6 +194,22 @@ function initialize () {
       }
     })
   }
+
+  function checkUserName () {
+    if (username) {
+      $('#username').text(username)
+      setDropDown()
+    } else {
+      setTimeout(checkUserName)
+    }
+  }
+
+  if (loggedIn) {
+    checkUserName()
+  } else {
+    setDropDown()
+  }
+
 
   var actions = {
     play: function () {

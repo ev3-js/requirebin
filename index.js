@@ -83,7 +83,7 @@ function initialize () {
     $('#login').hide()
     githubGist.getUser().show(null, function (err, user) {
       if (err) console.warn(err)
-      username = user
+      username = user.login
     })
     loggedIn = true
   }

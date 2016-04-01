@@ -248,7 +248,7 @@ function initialize () {
     logout: function () {
       loggedIn = false
       cookie.unset('oauth-token')
-      window.location.href = 'http://cycle.sh'
+      window.location.href = 'http://ev3.sh'
     },
 
     login: function () {

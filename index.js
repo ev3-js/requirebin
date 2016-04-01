@@ -81,7 +81,10 @@ function initialize () {
   var loggedIn = false
   if (cookie.get('oauth-token')) {
     $('#login').hide()
-    username = githubGist.getUser()
+    githubGist.getUser().show(null, function (err, user) {
+      if (err) console.warn(err)
+      username = user
+    })
     loggedIn = true
   }
 

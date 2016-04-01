@@ -23,6 +23,7 @@ function initialize () {
   var gistID
   var Console = new WindowConsole()
   var username = ''
+  var projectName = ''
   // dom nodes
   var outputEl = document.querySelector('#play')
   var actionsMenu = $('.actionsMenu')
@@ -206,10 +207,7 @@ function initialize () {
 
   if (loggedIn) {
     checkUserName()
-  } else {
-    setDropDown()
   }
-
 
   var actions = {
     play: function () {
@@ -252,7 +250,7 @@ function initialize () {
         $('#load-dialog').modal()
         var Modal = new ModalBody(document.getElementById('modal-body'))
         Modal.clear()
-        return Modal.createForm()
+        return Modal.createForm(projectName)
       }
       ui.$spinner.removeClass('hidden')
       startLogin()
@@ -292,6 +290,7 @@ function initialize () {
 
     editors.init(code)
     editors.setActive('bundle')
+    projectName = code.name
 
     // actions done with the meta editor:
     // - update the value of the editor whenever it's focused (it always has a valid json)
@@ -301,6 +300,7 @@ function initialize () {
       try {
         ui.$runButton.removeClass('disabled')
         window.packagejson = packagejson = JSON.parse(code)
+        localStorage.setItem('meta', packagejson)
       } catch (e) {
         // don't allow running the code if package.json is invalid
         ui.$runButton.addClass('disabled')

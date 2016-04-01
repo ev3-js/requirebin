@@ -105,12 +105,28 @@
     </div>
 
 <script id="bundle-template" type="text/template">var {loop, move, motor, read, sleep, out} = require('robot-loop')
-loop(main, /*ip address*/)
+loop(main /*,ip address*/)
 
 var steer = move()
 
-function main () {
+function main (input) {
+  if (input === 'forward') {
+    forward()
+  } else if (input === 'back') {
+    back()
+  }
+}
+
+function forward () {
+  out('moving forward')
   steer.rotations(1, 40, 0)
+  out('done')
+}
+
+function back () {
+  out('moving back')
+  steer.rotations(-1, 40, 0)
+  out('done')
 }
 </script>
   <script type="text/javascript" src="flatui-deps.js"></script>

@@ -77,7 +77,17 @@ function initialize () {
   }
   var parsedURL = url.parse(window.location.href, true)
   var gistTokens = Gist.fromUrl(parsedURL)
+  var gistCode = parsedURL.query.gist || ''
+  removeOldStorage()
   window.packagejson = packagejson
+
+  function removeOldStorage () {
+    var currentTime = new Date()
+    var oldTime = new Date(window.localStorage.getItem(gistCode + 'bundleTime'))
+    if ((currentTime - oldTime) > 7200000) {
+      window.localStorage.clear()
+    }
+  }
 
   var loggedIn = false
   if (cookie.get('oauth-token')) {
@@ -384,7 +394,9 @@ function initialize () {
     editors.all(function (editor) {
       editor.on('change', function () {
         var code = editor.getValue()
-        window.localStorage.setItem(editor.name + 'Code', code)
+        var gist = url.parse(window.location.href, true).query.gist || ''
+        window.localStorage.setItem(gist + editor.name + 'Time', new Date())
+        window.localStorage.setItem(gist + editor.name + 'Code', code)
       })
     })
 

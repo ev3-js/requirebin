@@ -235,7 +235,7 @@ function initialize () {
         var Modal = new ModalBody(modalBody)
         Modal.clear()
         return githubGist.getList(function (gist) {
-          Modal.fillModal(gist.description, gist.id, gist.owner.login + '/' + gist.id, githubGist.getCode())
+          Modal.fillModal(gist.description, gist.id, gist.owner.login + '/' + gist.id, githubGist.getCode.bind(githubGist))
         })
       }
       startLogin()

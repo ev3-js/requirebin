@@ -83,8 +83,10 @@ function initialize () {
 
   function removeOldStorage () {
     var currentTime = new Date()
-    var oldTime = new Date(window.localStorage.getItem(gistCode + 'bundleTime'))
-    if ((currentTime - oldTime) > 7200000) {
+    var oldTime = window.localStorage.getItem(gistCode + 'bundleTime')
+    if (!oldTime) return
+    oldTime = new Date(oldTime)
+    if (oldTime && (currentTime - oldTime) > 7200000) {
       window.localStorage.clear()
     }
   }

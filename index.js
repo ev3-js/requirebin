@@ -7,7 +7,6 @@ var url = require('url')
 var request = require('browser-request')
 var detective = require('detective')
 var keydown = require('keydown-with-event')
-var autoYield = require('auto-yield')
 
 var cookie = require('./lib/cookie')
 var Gist = require('./lib/github-gist.js')
@@ -23,9 +22,11 @@ function initialize () {
   var gistID
   var Console = new WindowConsole()
   var username = ''
+  var projectName = ''
   // dom nodes
   var outputEl = document.querySelector('#play')
   var actionsMenu = $('.actionsMenu')
+  var modalBody = $('#load-dialog #modal-body')[0]
 
   setTimeout(function () {
     initSandbox()
@@ -70,9 +71,8 @@ function initialize () {
   var packagejson = {
     'version': '1.0.0',
     'dependencies': {
-      'cycle-shell': '0.3.9',
-      'iframe-console': '0.1.13',
-      'ev3-client': '0.1.35'
+      'cycle-shell': '0.4.6',
+      'iframe-console': '0.1.13'
     }
   }
   var parsedURL = url.parse(window.location.href, true)
@@ -82,7 +82,10 @@ function initialize () {
   var loggedIn = false
   if (cookie.get('oauth-token')) {
     $('#login').hide()
-    username = githubGist.getUser()
+    githubGist.getUser().show(null, function (err, user) {
+      if (err) console.warn(err)
+      username = user.login
+    })
     loggedIn = true
   }
 
@@ -108,10 +111,6 @@ function initialize () {
     sandbox.iframeBody = editors.get('body').getValue()
     packagejson = packagejson ? window.packagejson : packagejson
     var bundle = editors.get('bundle').getValue()
-    if (packagejson.dependencies['ev3-client']) {
-      bundle = autoYield(bundle, ['read', 'sleep'], ['move', 'motor'])
-    }
-    console.log(bundle)
     sandbox.bundle(addRequires + bundle, packagejson.dependencies)
   }
 
@@ -181,10 +180,8 @@ function initialize () {
   }
 
   ui.$spinner.removeClass('hidden')
-  // if gistID is not set, fallback to specific queryParams, local storage
 
-  if (loggedIn) {
-    $('#username').val(username)
+  function setDropDown () {
     actionsMenu.dropkick({
       change: function (value, label) {
         if (value === 'noop') return
@@ -194,6 +191,19 @@ function initialize () {
         }, 0)
       }
     })
+  }
+
+  function checkUserName () {
+    if (username) {
+      $('#username').text(username)
+      setDropDown()
+    } else {
+      setTimeout(checkUserName)
+    }
+  }
+
+  if (loggedIn) {
+    checkUserName()
   }
 
   var actions = {
@@ -222,7 +232,11 @@ function initialize () {
     load: function () {
       if (loggedIn) {
         $('#load-dialog').modal()
-        return githubGist.getList()
+        var Modal = new ModalBody(modalBody)
+        Modal.clear()
+        return githubGist.getList(function (gist) {
+          Modal.fillModal(gist.description, gist.id, gist.owner.login + '/' + gist.id, githubGist.getCode())
+        })
       }
       startLogin()
     },
@@ -235,9 +249,9 @@ function initialize () {
     save: function (name) {
       if (loggedIn) {
         $('#load-dialog').modal()
-        var Modal = new ModalBody(document.getElementById('modal-body'))
+        var Modal = new ModalBody(modalBody)
         Modal.clear()
-        return Modal.createForm()
+        return Modal.createForm(projectName)
       }
       ui.$spinner.removeClass('hidden')
       startLogin()
@@ -259,6 +273,10 @@ function initialize () {
 
     'save-name': function (name) {
       this.save(name)
+    },
+
+    'edit-json': function () {
+      $('#edit-meta-modal').modal()
     }
   }
 
@@ -277,6 +295,7 @@ function initialize () {
 
     editors.init(code)
     editors.setActive('bundle')
+    projectName = code.name
 
     // actions done with the meta editor:
     // - update the value of the editor whenever it's focused (it always has a valid json)

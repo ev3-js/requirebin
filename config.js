@@ -7,10 +7,10 @@ var envs = {
     BROWSERIFYCDN: 'https://wzrd.in'
   },
   dev: {
-    GITHUB_CLIENT: '6854b77cb4d0e137ee58', // redirect goes to localhost:5000
-    GATEKEEPER: 'https://cycle-shell-gatekeeper.herokuapp.com',
+    GITHUB_CLIENT: '548de78e3437268558d9', // redirect goes to localhost:5000
+    GATEKEEPER: 'http://localhost:9999',
     BROWSERIFYCDN: 'https://wzrd.in'
   }
 }
 
-module.exports = envs.dev
+module.exports = envs.production

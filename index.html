@@ -13,6 +13,25 @@
   </head>
   <body>
 
+    <div id="edit-meta-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">package.json</h4>
+          </div>
+          <div id="modal-body" class="modal-body-list list-group">
+            <div id="edit-meta" class="require-bin-editor"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default primary" data-dismiss="modal" data-action="save-meta">Save</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
     <div id="load-dialog" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -62,16 +81,6 @@
         </a>
       </div>
 
-<!--
-  		<div class="editor-picker btn-group">
-  			<a class="btn btn-lg btn-primary" data-editor="bundle">
-  				code
-  			</a>
-  			<a class="btn btn-lg" data-editor="meta">
-  				package.json
-  			</a>
-  		</div>
--->
       <div id="login" class="actionsButtons">
         <a id="login-btn" data-action="login" class="btn btn-lg">
           Login
@@ -92,7 +101,6 @@
     <div id="play" class="right"></div>
 
     <!-- editors -->
-    <div id="edit-meta" class="require-bin-editor left hidden"></div>
     <div id="edit-head" class="require-bin-editor left hidden"></div>
     <div id="edit-body" class="require-bin-editor left hidden"></div>
     <div id="edit-bundle" class="require-bin-editor left"></div>

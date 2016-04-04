@@ -4,31 +4,29 @@ var events = require('events')
 var request = require('browser-request')
 var detective = require('detective')
 var createCache = require('browser-module-cache')
-var log = require('iframe-console')
 
 module.exports = function (opts) {
   return new Sandbox(opts)
 }
 
 function Sandbox (opts) {
-  var self = this
   if (!opts) opts = {}
   this.name = opts.name
   this.container = opts.container || document.body
-  this.iframeHead = opts.iframeHead || ""
-  this.iframeBody = opts.iframeBody || ""
+  this.iframeHead = opts.iframeHead || ''
+  this.iframeBody = opts.iframeBody || ''
   this.cdn = opts.cdn || window.location.protocol + '//' + window.location.host
   this.iframe = iframe({ container: this.container, sandboxAttributes: ['allow-scripts', 'allow-same-origin'] })
-  this.iframeStyle = "<style type='text/css'>" +
-    "html, body { margin: 0; padding: 0; border: 0; }\n" +
+  this.iframeStyle = `<style type='text/css'>` +
+    `html, body { margin: 0; padding: 0; border: 0; }\n` +
     opts.iframeStyle +
-    "</style>"
+    `</style>`
   this.cache = createCache(opts.cacheOpts)
 }
 
 inherits(Sandbox, events.EventEmitter)
 
-Sandbox.prototype.bundle = function(entry, preferredVersions) {
+Sandbox.prototype.bundle = function (entry, preferredVersions) {
   if (!preferredVersions) preferredVersions = {}
   var self = this
 
@@ -41,18 +39,18 @@ Sandbox.prototype.bundle = function(entry, preferredVersions) {
   var allBundles = ''
   var packages = []
 
-  self.cache.get(function(err, cached) {
+  self.cache.get(function (err, cached) {
     if (err) {
       self.emit('bundleEnd')
       return err
     }
 
     var download = []
-    modules.forEach(function(module) {
+    modules.forEach(function (module) {
       module = module + '@' + (preferredVersions[module] || 'latest')
 
       if (cached[module]) {
-        var tokens = module.split('@');
+        var tokens = module.split('@')
         var bundle = !tokens[0] ? cached[module]['bundle'].replace(encodeURIComponent(tokens[1]), tokens[1]) : cached[module]['bundle']
         allBundles += bundle
         packages.push(cached[module]['package'])
@@ -67,17 +65,17 @@ Sandbox.prototype.bundle = function(entry, preferredVersions) {
     }
 
     var body = {
-      "options": {
-        "debug": true
+      'options': {
+        'debug': true
       },
-      "dependencies": {}
+      'dependencies': {}
     }
 
-    download.map(function(module) {
+    download.map(function (module) {
       var tokens = module.split('@')
       var name, version
       if (!tokens[0]) {
-        name = '@'+encodeURIComponent(tokens[1])
+        name = '@' + encodeURIComponent(tokens[1])
         version = tokens[2]
       } else {
         name = tokens[0]
@@ -86,14 +84,14 @@ Sandbox.prototype.bundle = function(entry, preferredVersions) {
       body.dependencies[name] = version
     })
 
-    request({method: "POST", body: JSON.stringify(body), url: self.cdn + '/multi'}, downloadedModules)
+    request({method: 'POST', body: JSON.stringify(body), url: self.cdn + '/multi'}, downloadedModules)
   })
 
-  function downloadedModules(err, resp, body) {
+  function downloadedModules (err, resp, body) {
     if (err) {
       self.emit('bundleError', err)
       return err
-    } else if (resp.statusCode == 500) {
+    } else if (resp.statusCode === 500) {
       self.emit('bundleError', body)
       return body
     }
@@ -118,14 +116,14 @@ Sandbox.prototype.bundle = function(entry, preferredVersions) {
       delete json[module]
     })
 
-    Object.keys(json).forEach(function(module) {
-      var tokens = module.split('@');
+    Object.keys(json).forEach(function (module) {
+      var tokens = module.split('@')
       var bundle = !tokens[0] ? json[module]['bundle'].replace(encodeURIComponent(tokens[1]), tokens[1]) : json[module]['bundle']
       allBundles += bundle
       packages.push(json[module]['package'])
     })
 
-    self.cache.put(json, function() {
+    self.cache.put(json, function () {
       self.emit('modules', packages)
       makeIframe(allBundles)
     })
@@ -144,7 +142,7 @@ Sandbox.prototype.bundle = function(entry, preferredVersions) {
     var scriptTag = script.indexOf('</script>') === -1 ? (
         '<script type="text/javascript">' + script + '</script>'
     ) : (
-        '<script type="text/javascript" src="data:text/javascript;charset=UTF-8,'+ encodeURIComponent(script) + '"></script>'
+        '<script type="text/javascript" src="data:text/javascript;charset=UTF-8,' + encodeURIComponent(script) + '"></script>'
     )
 
     var body = self.iframeBody + scriptTag

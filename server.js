@@ -9,11 +9,8 @@ app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname + req.path))
 })
 
-
-
 app.listen(process.env.PORT || 3000)
 
-console.log('listening')
 process.on('uncaughtException', function (err) {
   console.log(err.stack)
 })

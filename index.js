@@ -27,6 +27,8 @@ function initialize () {
   // dom nodes
   var outputEl = document.querySelector('#play')
   var actionsMenu = $('.actionsMenu')
+  var modalBody = $('#load-dialog #modal-body')[0]
+
 
   setTimeout(function () {
     initSandbox()
@@ -235,7 +237,11 @@ function initialize () {
     load: function () {
       if (loggedIn) {
         $('#load-dialog').modal()
-        return githubGist.getList()
+        var Modal = new ModalBody(modalBody)
+        Modal.clear()
+        return githubGist.getList(function (gist) {
+          Modal.fillModal(gist.description, gist.id, gist.owner.login + '/' + gist.id, githubGist.getCode.bind(githubGist))
+        })
       }
       startLogin()
     },
@@ -248,7 +254,7 @@ function initialize () {
     save: function (name) {
       if (loggedIn) {
         $('#load-dialog').modal()
-        var Modal = new ModalBody(document.getElementById('modal-body'))
+        var Modal = new ModalBody(modalBody)
         Modal.clear()
         return Modal.createForm(projectName)
       }
@@ -300,7 +306,6 @@ function initialize () {
       try {
         ui.$runButton.removeClass('disabled')
         window.packagejson = packagejson = JSON.parse(code)
-        localStorage.setItem('meta', packagejson)
       } catch (e) {
         // don't allow running the code if package.json is invalid
         ui.$runButton.addClass('disabled')

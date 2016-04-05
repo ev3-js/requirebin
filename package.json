@@ -7,25 +7,19 @@
     "build": "browserify embed.js -o embed-bundle.js && browserify embed2.js -o embed-bundle-v2.js && browserify index.js -o bundle.js --debug",
     "minify": "cat bundle.js | uglifyjs -o bundle.js",
     "modifyconfig": "sed -i '.bak' 's/envs.dev/envs.production/' config.js && rm config.js.bak",
-    "deploy": "standard && gh-pages-deploy",
+    "pre-deploy": "standard && npm run modifyconfig && npm run build && npm run minify",
+    "deploy": "git push heroku master",
     "dev": "beefy embed.js:embed-bundle.js index.js:bundle.js -p 5000 --live",
     "test": "standard"
-  },
-  "gh-pages-deploy": {
-    "cname": "requirebin.com",
-    "prep": [
-      "modifyconfig",
-      "build",
-      "minify"
-    ],
-    "noprompt": false
   },
   "standard": {
     "ignore": [
       "flatui-deps.js",
       "uglifyjs2-browser.js",
       "lib/codemirror_modes/**",
-      "flatui/**"
+      "flatui/**",
+      "embed-bundle.js",
+      "embed-bundle-v2.js"
     ]
   },
   "repository": {
@@ -63,6 +57,6 @@
     "extend": "^2.0.0",
     "gh-pages-deploy": "^0.3.0",
     "standard": "^5.0.0",
-    "uglify-js": "~2.4.12"
+    "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony"
   }
 }

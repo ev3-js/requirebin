@@ -29,7 +29,6 @@ function initialize () {
   var actionsMenu = $('.actionsMenu')
   var modalBody = $('#load-dialog #modal-body')[0]
 
-
   setTimeout(function () {
     initSandbox()
   })
@@ -74,12 +73,24 @@ function initialize () {
     'version': '1.0.0',
     'dependencies': {
       'iframe-console': '0.1.13',
-      'robot-loop': '0.1.13'
+      'robot-loop': '0.1.14'
     }
   }
   var parsedURL = url.parse(window.location.href, true)
   var gistTokens = Gist.fromUrl(parsedURL)
+  var gistCode = parsedURL.query.gist || ''
+  removeOldStorage()
   window.packagejson = packagejson
+
+  function removeOldStorage () {
+    var currentTime = new Date()
+    var oldTime = window.localStorage.getItem(gistCode + 'bundleTime')
+    if (!oldTime) return
+    oldTime = new Date(oldTime)
+    if (oldTime && (currentTime - oldTime) > 7200000) {
+      window.localStorage.clear()
+    }
+  }
 
   var loggedIn = false
   if (cookie.get('oauth-token')) {
@@ -185,7 +196,7 @@ function initialize () {
   }
 
   ui.$spinner.removeClass('hidden')
-  // if gistID is not set, fallback to specific queryParams, local storage
+
   function setDropDown () {
     actionsMenu.dropkick({
       change: function (value, label) {
@@ -278,6 +289,10 @@ function initialize () {
 
     'save-name': function (name) {
       this.save(name)
+    },
+
+    'edit-json': function () {
+      $('#edit-meta-modal').modal()
     }
   }
 
@@ -385,7 +400,9 @@ function initialize () {
     editors.all(function (editor) {
       editor.on('change', function () {
         var code = editor.getValue()
-        window.localStorage.setItem(editor.name + 'Code', code)
+        var gist = url.parse(window.location.href, true).query.gist || ''
+        window.localStorage.setItem(gist + editor.name + 'Time', new Date())
+        window.localStorage.setItem(gist + editor.name + 'Code', code)
       })
     })
 

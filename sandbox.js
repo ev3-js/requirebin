@@ -18,9 +18,9 @@ function Sandbox (opts) {
   this.cdn = opts.cdn || window.location.protocol + '//' + window.location.host
   this.iframe = iframe({ container: this.container, sandboxAttributes: ['allow-scripts', 'allow-same-origin'] })
   this.iframeStyle = `<style type='text/css'>` +
-    'html, body { margin: 0; padding: 0; border: 0; }\n' +
+    `html, body { margin: 0; padding: 0; border: 0; }\n` +
     opts.iframeStyle +
-    '</style>'
+    `</style>`
   this.cache = createCache(opts.cacheOpts)
 }
 

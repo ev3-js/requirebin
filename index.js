@@ -73,7 +73,7 @@ function initialize () {
     'version': '1.0.0',
     'dependencies': {
       'iframe-console': '0.1.13',
-      'robot-loop': '0.1.20'
+      'robot-loop': '0.1.21'
     }
   }
   var parsedURL = url.parse(window.location.href, true)

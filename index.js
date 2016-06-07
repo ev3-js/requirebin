@@ -73,7 +73,8 @@ function initialize () {
     'version': '1.0.0',
     'dependencies': {
       'iframe-console': '0.1.13',
-      'robot-loop': '0.1.26'
+      'babel-polyfill': '*',
+      'robot-loop': '0.1.37'
     }
   }
   var parsedURL = url.parse(window.location.href, true)
@@ -119,7 +120,7 @@ function initialize () {
   if (parsedURL.port) currentHost += ':' + parsedURL.port
 
   function doBundle () {
-    var addRequires = 'require("iframe-console")()\n\n'
+    var addRequires = 'require("iframe-console")()\nrequire("babel-polyfill")\n\n'
     sandbox.iframeHead = editors.get('head').getValue()
     sandbox.iframeBody = editors.get('body').getValue()
     packagejson = packagejson ? window.packagejson : packagejson

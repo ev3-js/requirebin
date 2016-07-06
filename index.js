@@ -156,15 +156,13 @@ function initialize () {
     return JSON.stringify(packagejson, null, '  ')
   }
 
-  function saveGist (name, id, opts) {
+  function saveGist (name, id, cb) {
     ui.$spinner.removeClass('hidden')
     var entry = editors.get('bundle').getValue()
-    opts = opts || {}
-    opts.isPublic = 'isPublic' in opts ? opts.isPublic : true
 
     var gist = {
       'description': name,
-      'public': opts.isPublic,
+      'public': true,
       'files': {
         'index.js': {
           'content': entry
@@ -182,7 +180,7 @@ function initialize () {
     if (sandbox.iframeHead) gist.files['page-head.html'] = {'content': sandbox.iframeHead}
     if (sandbox.iframeBody) gist.files['page-body.html'] = {'content': sandbox.iframeBody}
 
-    githubGist.save(gist, id, opts, function (err, newGist) {
+    githubGist.save(gist, id, {}, function (err, newGist) {
       var newGistId = newGist.id
       if (newGist.owner && newGist.owner.login) {
         newGistId = newGist.owner.login + '/' + newGistId
@@ -190,6 +188,7 @@ function initialize () {
       ui.$spinner.addClass('hidden')
       if (err) ui.tooltipMessage('error', err.toString())
       if (newGistId && newGist.id !== id) window.location.href = '/?gist=' + newGistId
+      cb(newGist)
     })
   }
 
@@ -261,18 +260,32 @@ function initialize () {
     },
 
     save: function (name) {
-      if (loggedIn) {
-        $('#load-dialog').modal()
-        var Modal = new ModalBody(modalBody)
-        Modal.clear()
-        return Modal.createForm(projectName)
+      if (loggedIn && !projectName) {
+        return getName()
+      } else if (loggedIn) {
+        return saveGist(projectName, gistID)
       }
       ui.$spinner.removeClass('hidden')
       startLogin()
     },
 
+    'save-as': function () {
+      return getName()
+    },
+
     'show-forks': function () {
       gistID && ui.showForks(githubGist.forks, githubGist.parent)
+    },
+
+    'new': function () {
+      if (projectName) {
+        return saveGist(projectName, gistID, function () {
+          window.localStorage.clear()
+          window.location.href = window.location.origin
+        })
+      }
+      window.localStorage.clear()
+      window.location.href = window.location.origin
     },
 
     logout: function () {
@@ -292,6 +305,14 @@ function initialize () {
     'edit-json': function () {
       $('#edit-meta-modal').modal()
     }
+  }
+
+  function getName () {
+    $('#load-dialog').modal()
+    var Modal = new ModalBody(modalBody, '#load-dialog')
+    Modal.clear()
+    Modal.createForm(projectName)
+    return
   }
 
   function startLogin () {
@@ -394,7 +415,7 @@ function initialize () {
     })
 
     // UI actions when there's no Gist
-      // enable localStorage save when the user is working on a new gist
+    // enable localStorage save when the user is working on a new gist
     editors.all(function (editor) {
       editor.on('change', function () {
         var code = editor.getValue()
@@ -407,7 +428,6 @@ function initialize () {
     // loads the current code on load
     setTimeout(function () {
       actions.play()
-      // sandbox actions
     }, 500)
   })
 }

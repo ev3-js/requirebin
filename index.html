@@ -49,6 +49,15 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+    <div id="function-search">
+      <div class="input-group">
+        <input name="filter-functions" type="text" class="form-control" placeholder="function">
+      </div>
+      <div class='results-wrapper'>
+        <div class='results'></div>
+      </div>
+    </div>
+
     <div class="toolbar">
       <h3 class="logo"><img src="img/cycle-shell.png">EV3 Shell</h3>
 
@@ -88,10 +97,11 @@
 
       <select id="dropdown" class="actionsMenu hide" value="Actions" tabindex="1">
         <option id="username" value="noop" selected="selected">Actions</option>
+        <option value="new">Create New</option>
+        <option value="save">Save</option>
+        <option value="save-as">Save As</option>
         <option value="load"><button>Load Gist</button></option>
-        <option value="save">Save Gist</option>
         <option value="edit-json">Edit package.json</option>
-        <option value="save-private">Save Private Gist</option>
         <option id="logout" value="logout">Logout</option>
       </select>
 

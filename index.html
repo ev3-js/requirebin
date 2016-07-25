@@ -122,27 +122,47 @@
     </div>
 
 <script id="bundle-template" type="text/template">var {loop, move, motor, read, sleep, out} = require('robot-loop')
-loop(main /*,ip address*/)
+loop(main, 'ip address', {
+  teamName: '',
+  teamColor: '',
+  game: ''
+})
 
 var steer = move()
 
-function main (input) {
+function main (input, rot) {
   if (input === 'forward') {
-    forward()
+    forward(rot)
   } else if (input === 'back') {
-    back()
+    back(rot)
+  } else if (input === 'left') {
+    left(rot)
+  } else if (input === 'right') {
+    right(rot)
   }
 }
 
-function forward () {
+function forward (rot) {
   out('moving forward')
-  steer.rotations(1, 40, 0)
+  steer.rotations(rot, 40, 0)
   out('done')
 }
 
-function back () {
+function back (rot) {
   out('moving back')
-  steer.rotations(-1, 40, 0)
+  steer.rotations(-rot, 40, 0)
+  out('done')
+}
+
+function left (rot) {
+  out('turning left')
+  steer.rotations(1, 40, -rot)
+  out('done')
+}
+
+function right (rot) {
+  out('turning right')
+  steer.rotations(1, 40, rot)
   out('done')
 }
 </script>

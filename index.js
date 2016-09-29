@@ -74,7 +74,7 @@ function initialize () {
     'dependencies': {
       'iframe-console': '0.1.13',
       'babel-polyfill': '*',
-      'robot-loop': '0.1.37'
+      'robot-loop': '0.1.27'
     }
   }
   var parsedURL = url.parse(window.location.href, true)

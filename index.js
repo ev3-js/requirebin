@@ -73,7 +73,7 @@ function initialize () {
     'version': '1.0.0',
     'dependencies': {
       'iframe-console': '0.1.13',
-      'robot-loop': '0.1.39'
+      'robot-loop': '0.1.41'
     }
   }
 

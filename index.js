@@ -73,8 +73,7 @@ function initialize () {
     'version': '1.0.0',
     'dependencies': {
       'iframe-console': '0.1.13',
-      'babel-polyfill': '*',
-      'robot-loop': '0.1.37'
+      'robot-loop': '0.1.39'
     }
   }
   var parsedURL = url.parse(window.location.href, true)

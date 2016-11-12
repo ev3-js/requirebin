@@ -76,6 +76,7 @@ function initialize () {
       'robot-loop': '0.1.39'
     }
   }
+
   var parsedURL = url.parse(window.location.href, true)
   var gistTokens = Gist.fromUrl(parsedURL)
   var gistCode = parsedURL.query.gist || ''
@@ -119,7 +120,7 @@ function initialize () {
   if (parsedURL.port) currentHost += ':' + parsedURL.port
 
   function doBundle () {
-    var addRequires = 'require("iframe-console")()\nrequire("babel-polyfill")\n\n'
+    var addRequires = 'require("iframe-console")()\n\n'
     sandbox.iframeHead = editors.get('head').getValue()
     sandbox.iframeBody = editors.get('body').getValue()
     packagejson = packagejson ? window.packagejson : packagejson

@@ -130,39 +130,47 @@ loop(main, 'ip address', {
 
 var steer = move()
 
-function main (input, rot) {
+function main (input) {
   if (input === 'forward') {
-    forward(rot)
+    forward()
   } else if (input === 'back') {
-    back(rot)
+    back()
   } else if (input === 'left') {
-    left(rot)
+    left()
   } else if (input === 'right') {
-    right(rot)
+    right()
+  } else if (input === 'stop') {
+    stop()
   }
 }
 
-function forward (rot) {
+function forward () {
   out('moving forward')
-  steer.rotations(rot, 40, 0)
+  steer.rotations(1, 40, 0)
   out('done')
 }
 
-function back (rot) {
+function back () {
   out('moving back')
-  steer.rotations(-rot, 40, 0)
+  steer.rotations(-1, 40, 0)
   out('done')
 }
 
-function left (rot) {
+function left () {
   out('turning left')
-  steer.rotations(1, 40, -rot)
+  steer.rotations(1, 40, -0.5)
   out('done')
 }
 
-function right (rot) {
+function right () {
   out('turning right')
-  steer.rotations(1, 40, rot)
+  steer.rotations(1, 40, 0.5)
+  out('done')
+}
+
+function stop () {
+  out('stopping')
+  steer.stop()
   out('done')
 }
 </script>
